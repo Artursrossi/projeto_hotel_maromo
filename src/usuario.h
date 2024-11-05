@@ -31,3 +31,13 @@ int buscarUnico(char id_usuario[64]){
   Listar usuário
  */
 int listar();
+
+/*
+  Lidar com Registro de Usuários
+ */
+int controlarRegistroUsuario();
+
+/*
+  Lidar com Login do Usuários
+ */
+int controlarLoginUsuario();

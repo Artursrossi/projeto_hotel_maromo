@@ -41,3 +41,15 @@ int buscarUnico(char id_usuario[64]){
 int listar(){
   return 1;
 }
+
+int controlarRegistroUsuario(){
+  printf("Cadastrar nova conta \n");
+
+  return 1;
+}
+
+int controlarLoginUsuario(){
+  printf("Entrar com uma conta existente \n");
+
+  return 1;
+}
