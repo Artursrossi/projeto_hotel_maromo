@@ -1,20 +1,17 @@
-#include "hotel.c"
+#ifndef HOTEL_H
+#define HOTEL_H
+
 #include <stdbool.h>
+#include "hotel.c"
 
 typedef struct //simula um quarto e suas caracteristicas de interesse gerencial
 {
     bool quarto_preparado;
-
     int quarto_numero;
-
     char numero_ocupantes;
-
     bool quarto_ocupado; //flag para checar se o quarto está ocupado ou não 0 para falso e 1 para verdadeiro
-
     float quarto_preco;
-
     char quarto_classe;
-
 } quarto_hotel;
 
 
@@ -31,3 +28,4 @@ void gerenciar_quarto(); // atualiza informações do quarto
 
 void desalugar_quarto();
 
+#endif

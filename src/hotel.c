@@ -1,5 +1,5 @@
-#include "Hotel.h"
-#include "stdio.h"
+#include <stdio.h>
+#include "hotel.h"
 
 void inicializa_hotel()
 {

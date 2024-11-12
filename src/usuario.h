@@ -1,36 +1,60 @@
+#ifndef USUARIO_H
+#define USUARIO_H
+
 #include "usuario.c"
+
+typedef enum  {
+  USER, ADMIN
+} Cargo;
+
+typedef struct {
+  int codigo;
+  char nome[64];
+  char email[64];
+  char senha[64];
+  int idade;
+  char cargo[32];
+  char cadastrado_em[64];
+} Usuario;
+
+typedef struct {
+  char nome[64];
+  char email[64];
+  char senha[64];
+  int idade;
+} CadastrarUsuario;
 
 /*
   Registrar usuário
  */
-int registrar(Usuario *usuario);
+int registrarUsuario(Usuario *usuario);
 
 /*
   Autenticar usuário
  */
-int entrar(char email[64], char senha[64]);
+int autenticarUsuario(char email[64], char senha[64]);
 
 /*
   Deslogar usuário
  */
-int sair(Usuario *usuario);
+int deslogarUsuario(Usuario *usuario);
 
 /*
   Deletar usuário
  */
-int deletar(char id_usuario[64]);
+int deletarUsuario(char id_usuario[64]);
 
 /*
   Buscar um único usuário
  */
-int buscarUnico(char id_usuario[64]){
+int buscarUnicoUsuario(char id_usuario[64]){
   return 1;
 }
 
 /*
-  Listar usuário
+  Listar usuários
  */
-int listar();
+int listarUsuarios();
 
 /*
   Lidar com Registro de Usuários
@@ -41,3 +65,5 @@ int controlarRegistroUsuario();
   Lidar com Login do Usuários
  */
 int controlarLoginUsuario();
+
+#endif

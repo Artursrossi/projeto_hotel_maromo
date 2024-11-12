@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "usuario.c"
-#include "hotel.c"
+#include "usuario.h"
+#include "hotel.h"
 
 void exibirMenuInicial(){
   printf("Escolha uma opção \n");
@@ -54,6 +54,7 @@ void controlarMenuInicial(){
 
 int main(){
   controlarMenuInicial();
+  // listar();
 
   return 0;
 }

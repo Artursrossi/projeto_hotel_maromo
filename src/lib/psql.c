@@ -1,3 +1,5 @@
+#include "psql.h"
+
 PGconn* connection(){
   // Definir credenciais do banco de dados
   char *conninfo = "dbname=lingc user=docker password=Teste123!@# host=localhost port=5432";
