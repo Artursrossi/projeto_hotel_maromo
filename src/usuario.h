@@ -1,6 +1,5 @@
 #ifndef USUARIO_H
 #define USUARIO_H
-
 #include "usuario.c"
 
 typedef enum  {
@@ -27,29 +26,27 @@ typedef struct {
 /*
   Registrar usuário
  */
-int registrarUsuario(Usuario *usuario);
+int registrarUsuario();
 
 /*
   Autenticar usuário
  */
-int autenticarUsuario(char email[64], char senha[64]);
+int autenticarUsuario();
 
 /*
   Deslogar usuário
  */
-int deslogarUsuario(Usuario *usuario);
+int deslogarUsuario();
 
 /*
   Deletar usuário
  */
-int deletarUsuario(char id_usuario[64]);
+int deletarUsuario();
 
 /*
   Buscar um único usuário
  */
-int buscarUnicoUsuario(char id_usuario[64]){
-  return 1;
-}
+int buscarUnicoUsuario();
 
 /*
   Listar usuários

@@ -2,26 +2,23 @@
 #include <string.h>
 #include "usuario.h"
 
-int registrarUsuario(Usuario *usuario){
-  printf("Usuario \n");
-  printf("%d \n", usuario -> idade);
-
+int registrarUsuario(){
   return 1;
 }
 
-int autenticarUsuario(char email[64], char senha[64]){
+int autenticarUsuario(){
   return 1;
 }
 
-int deslogarUsuario(Usuario *usuario){
+int deslogarUsuario(){
   return 1;
 }
 
-int deletarUsuario(char id_usuario[64]){
+int deletarUsuario(){
   return 1;
 }
 
-int buscarUnicoUsuario(char id_usuario[64]){
+int buscarUnicoUsuario(){
   return 1;
 }
 

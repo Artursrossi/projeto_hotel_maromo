@@ -54,7 +54,6 @@ void controlarMenuInicial(){
 
 int main(){
   controlarMenuInicial();
-  // listar();
 
   return 0;
 }
