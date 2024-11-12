@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "usuario.h"
+#include "models/obterUsuarios.h"
 
 int registrarUsuario(){
   return 1;
@@ -23,6 +24,8 @@ int buscarUnicoUsuario(){
 }
 
 int listarUsuarios(){
+  obterUsuarios();
+
   return 1;
 }
 

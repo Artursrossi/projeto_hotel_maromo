@@ -2,10 +2,6 @@
 #define USUARIO_H
 #include "usuario.c"
 
-typedef enum  {
-  USER, ADMIN
-} Cargo;
-
 typedef struct {
   int codigo;
   char nome[64];
