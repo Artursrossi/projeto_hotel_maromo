@@ -16,12 +16,10 @@ typedef struct //simula um quarto e suas caracteristicas de interesse gerencial
     char quarto_classe;
 
 } quarto_hotel;
+typedef quarto_hotel *p_hotel; // variavel que cria um ponteiro apontando para a estrutura quarto_hotel
 
 
-
-typedef quarto_hotel  *p_hotel; // variavel que cria um ponteiro apontando para a estrutura quarto_hotel
-
-extern p_hotel Hotel[100]; //variavel que simula o hotel sendo este tratado como um array contendo 100 quartos
+extern p_hotel Hotel[32]; //variavel que simula o hotel sendo este tratado como um array contendo 100 quartos
 
 void inicializa_hotel();
 
@@ -30,4 +28,5 @@ void alugar_quarto();
 void gerenciar_quarto(); // atualiza informações do quarto
 
 void desalugar_quarto();
+
 
