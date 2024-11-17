@@ -1,6 +1,9 @@
 #include "hotel.c"
 #include <stdbool.h>
 
+#include <stdbool.h>
+
+
 typedef struct //simula um quarto e suas caracteristicas de interesse gerencial
 {
     bool quarto_preparado;
@@ -11,7 +14,7 @@ typedef struct //simula um quarto e suas caracteristicas de interesse gerencial
 
     bool quarto_ocupado; //flag para checar se o quarto está ocupado ou não 0 para falso e 1 para verdadeiro
 
-    float quarto_preco;
+    float quarto_valor_aluguel;
 
     char quarto_classe;
 
@@ -23,9 +26,11 @@ extern p_hotel Hotel[32]; //variavel que simula o hotel sendo este tratado como 
 
 void inicializa_hotel();
 
+void cliente_janela();
+
 void alugar_quarto();
 
-void gerenciar_quarto(); // atualiza informações do quarto
+void alterar_aluguel(); // atualiza informações do quarto
 
 void desalugar_quarto();
 
