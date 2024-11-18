@@ -29,10 +29,31 @@ void exibirMenuAdmin(){
   printf("5 - Deletar quarto existente \n");
   printf("6 - Bloquear usuário \n");
   printf("7 - Exibir métricas faturamento \n");
+
+  return;
 }
 
+void controlarMenuInicial(){
+  short int opt = 0;
+  do{
+    exibirMenuInicial();
+    scanf("%hd", &opt);
+  }while(opt <= 0 || opt > 2);
+  switch(opt){
+    case 1:
+      controlarLoginUsuario();
+      break;
+    case 2:
+      controlarRegistroUsuario();
+      break;
+  }
+}
+
+
+// t_usuario usuario;
+
 int main(){
-  inicializa_hotel();
+  controlarMenuInicial();
 
   return 0;
 }

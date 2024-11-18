@@ -3,3 +3,5 @@ gcc obterUsuarios.c -o obterUsuarios -I "/usr/include/postgresql" -L "/usr/lib/x
 
 # COMANDO COM A LIB INCLUSA
 gcc main.c -o main -L "/usr/lib/x86_64-linux-gnu" -lpq
+
+cc main.c usuario.c hotel.c -o main -L "/usr/lib/x86_64-linux-gnu" -lpq

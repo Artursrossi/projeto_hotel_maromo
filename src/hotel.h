@@ -2,13 +2,10 @@
 #define HOTEL_H
 
 #include <stdbool.h>
-#include "hotel.c"
 
 #include <stdbool.h>
 
-
-// typedef struct //simula um quarto e suas caracteristicas de interesse gerencial
-// {
+// extern struct QuartoHotel{
 //     bool quarto_preparado;
 //     int quarto_numero;
 //     char numero_ocupantes;
@@ -17,11 +14,19 @@
 //     float quarto_valor_aluguel;
 
 //     char quarto_classe;
-// } quarto_hotel;
-// typedef quarto_hotel *p_hotel; // variavel que cria um ponteiro apontando para a estrutura quarto_hotel
+// } t_quarto_hotel;
 
+//simula um quarto e suas caracteristicas de interesse gerencial
+typedef struct QuartoHotel{
+    bool quarto_preparado;
+    int quarto_numero;
+    char numero_ocupantes;
+    bool quarto_ocupado; //flag para checar se o quarto está ocupado ou não 0 para falso e 1 para verdadeiro
 
-// extern p_hotel Hotel[32]; //variavel que simula o hotel sendo este tratado como um array contendo 100 quartos
+    float quarto_valor_aluguel;
+
+    char quarto_classe;
+} t_quarto_hotel;
 
 void inicializa_hotel();
 

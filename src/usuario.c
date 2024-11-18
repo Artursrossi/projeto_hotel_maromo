@@ -3,6 +3,7 @@
 #include "usuario.h"
 #include "models/obterUsuarios.h"
 #include "models/cadastrarUsuario.h"
+#include "models/obterUnicoUsuario.h"
 
 int registrarUsuario(){
   char nome[64] = "Teste";
@@ -15,7 +16,13 @@ int registrarUsuario(){
   return 1;
 }
 
+t_usuario usuario;
 int autenticarUsuario(){
+  usuario.idade = 18;
+
+  char email[32] = "teste@gmail.com";
+  obterUnicoUsuario(email);
+
   return 1;
 }
 
@@ -46,6 +53,7 @@ int controlarRegistroUsuario(){
 
 int controlarLoginUsuario(){
   printf("Entrar com uma conta existente \n");
+  autenticarUsuario();
 
   return 1;
 }
