@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-// #include "../usuario.h"
 
 #include "../../external/libpq/libpq-fe.h"
 #include "../lib/psql.h"
@@ -14,14 +13,14 @@ typedef struct {
   int idade;
   char cargo[32];
   char cadastrado_em[64];
-} Usuario2;
+} Usuario3;
 
-int obterUsuarios() {
+int obterUnicoUsuario(char email_usuario[32]) {
     // Obter conexão com o banco de dados
     PGconn *conn = connection();
 
     // SQL para ser executado
-    char *query = "SELECT * FROM usuarios";
+    char *query = "SELECT * FROM usuarios WHERE email = 'artur@gmail.com'";
 
     // Obter resposta do SQL executado
     PGresult *res = PQexec(conn, query);
@@ -31,16 +30,16 @@ int obterUsuarios() {
 
     // Fazer a captação de possíveis erros
     if (resStatus != PGRES_TUPLES_OK) {
-        PQclear(res);
-        PQfinish(conn);
-        exit(1);
+      PQclear(res);
+      PQfinish(conn);
+      return 0; // Código de erro  
     }
 
     // Obter número de linhas e colunas
     int rows = PQntuples(res);
     int cols = PQnfields(res);
 
-    Usuario2 usuario;
+    Usuario3 usuario;
 
     // Percorrer cada linha do banco
     for (int i = 0; i < rows; i++) {
@@ -95,6 +94,5 @@ int obterUsuarios() {
     PQclear(res);
     PQfinish(conn);
 
-    // TODO: Retornar todos os usuários
-    return 0;
+    return 1;
 }

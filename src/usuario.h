@@ -1,23 +1,33 @@
 #ifndef USUARIO_H
 #define USUARIO_H
-#include "usuario.c"
 
-typedef struct {
-  int codigo;
+// extern struct Usuario {
+//   int codigo;
+//   char nome[64];
+//   char email[64];
+//   char senha[64];
+//   int idade;
+//   char cargo[32];
+//   char cadastrado_em[64];
+// }t_usuario;
+
+typedef struct Usuario {
+    int codigo;
+    char nome[64];
+    char email[64];
+    char senha[64];
+    int idade;
+    char cargo[32];
+    char cadastrado_em[64];
+} t_usuario;
+
+
+typedef struct CadastrarUsuario{
   char nome[64];
   char email[64];
   char senha[64];
   int idade;
-  char cargo[32];
-  char cadastrado_em[64];
-} Usuario;
-
-typedef struct {
-  char nome[64];
-  char email[64];
-  char senha[64];
-  int idade;
-} CadastrarUsuario;
+}t_cadastrar_usuario;
 
 /*
   Registrar usuário

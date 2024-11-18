@@ -6,6 +6,6 @@
 /*
   Cadastrar Usuário no banco de dados
  */
-int cadastrarUsuario(char nome[64],char email[64],char senha[64],int idade);
+int cadastrarUsuario(char nome[64],char email[32],char senha[32],int idade);
 
 #endif

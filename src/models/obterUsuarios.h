@@ -4,7 +4,7 @@
 #include "obterUsuarios.c"
 
 /*
-  Obter Usuários
+  Obter todos os usuários do banco de dados
  */
 int obterUsuarios();
 
