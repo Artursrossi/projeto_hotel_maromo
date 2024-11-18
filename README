@@ -1,0 +1,5 @@
+# COMANDO COM A LIB INSTALADA NA MÁQUINA (EXTERNO)
+gcc obterUsuarios.c -o obterUsuarios -I "/usr/include/postgresql" -L "/usr/lib/x86_64-linux-gnu" -lpq
+
+# COMANDO COM A LIB INCLUSA
+gcc main.c -o main -L "/usr/lib/x86_64-linux-gnu" -lpq

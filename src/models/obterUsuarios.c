@@ -1,12 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../usuario.h"
+// #include "../usuario.h"
 
-// TODO: Adicionar libpq anexada ao projeto
-// #include "../../external/libpq/libpq-fe.h"
-#include <libpq-fe.h>
+#include "../../external/libpq/libpq-fe.h"
 #include "../lib/psql.h"
+
+typedef struct {
+  int codigo;
+  char nome[64];
+  char email[64];
+  char senha[64];
+  int idade;
+  char cargo[32];
+  char cadastrado_em[64];
+} Usuario2;
 
 int obterUsuarios() {
     // Obter conexão com o banco de dados
@@ -32,7 +40,7 @@ int obterUsuarios() {
     int rows = PQntuples(res);
     int cols = PQnfields(res);
 
-    Usuario usuario;
+    Usuario2 usuario;
 
     // Percorrer cada linha do banco
     for (int i = 0; i < rows; i++) {
@@ -91,3 +99,8 @@ int obterUsuarios() {
     // TODO: Retornar todos os usuários
     return 0;
 }
+
+// int main(){
+//     obterUsuarios();
+//     return 0;
+// }
