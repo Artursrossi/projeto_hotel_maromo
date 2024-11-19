@@ -4,12 +4,12 @@
 /*
   Cadastrar Usuário no banco de dados
  */
-int cadastrarUsuario(char nome[64],char email[32],char senha[32],int idade);
+int cadastrarUsuario(char nome[65],char email[33],char senha[17],int idade);
 
 /*
   Obter um único usuário do banco de dados, utilizando o email do mesmo, que é único
  */
-int obterUnicoUsuario(char email_usuario[32]);
+int obterUnicoUsuario(t_usuario *p_usuario,char email[33]);
 
 /*
   Obter todos os usuários do banco de dados

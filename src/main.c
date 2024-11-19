@@ -49,9 +49,6 @@ void controlarMenuInicial(){
   }
 }
 
-
-// t_usuario usuario;
-
 int main(){
   controlarMenuInicial();
 

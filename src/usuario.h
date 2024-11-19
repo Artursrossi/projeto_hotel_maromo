@@ -3,60 +3,52 @@
 
 typedef struct Usuario {
     int codigo;
-    char nome[64];
-    char email[64];
-    char senha[64];
+    char nome[65];
+    char email[33];
+    char senha[17];
     int idade;
-    char cargo[32];
-    char cadastrado_em[64];
+    char cargo[14];
+    char cadastrado_em[11];
 } t_usuario;
-
-
-typedef struct CadastrarUsuario{
-  char nome[64];
-  char email[64];
-  char senha[64];
-  int idade;
-}t_cadastrar_usuario;
 
 /*
   Registrar usuário
  */
-int registrarUsuario();
+void registrarUsuario();
 
 /*
   Autenticar usuário
  */
-int autenticarUsuario();
+void autenticarUsuario();
 
 /*
   Deslogar usuário
  */
-int deslogarUsuario();
+void deslogarUsuario();
 
 /*
   Deletar usuário
  */
-int deletarUsuario();
+void deletarUsuario();
 
 /*
   Buscar um único usuário
  */
-int buscarUnicoUsuario();
+void buscarUnicoUsuario();
 
 /*
   Listar usuários
  */
-int listarUsuarios();
+void listarUsuarios();
 
 /*
   Lidar com Registro de Usuários
  */
-int controlarRegistroUsuario();
+void controlarRegistroUsuario();
 
 /*
   Lidar com Login do Usuários
  */
-int controlarLoginUsuario();
+void controlarLoginUsuario();
 
 #endif
