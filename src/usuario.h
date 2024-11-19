@@ -1,16 +1,6 @@
 #ifndef USUARIO_H
 #define USUARIO_H
 
-// extern struct Usuario {
-//   int codigo;
-//   char nome[64];
-//   char email[64];
-//   char senha[64];
-//   int idade;
-//   char cargo[32];
-//   char cadastrado_em[64];
-// }t_usuario;
-
 typedef struct Usuario {
     int codigo;
     char nome[64];

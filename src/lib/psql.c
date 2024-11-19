@@ -1,4 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "psql.h"
+#include "../../external/libpq/libpq-fe.h"
 
 PGconn* connection(){
   // Definir credenciais do banco de dados

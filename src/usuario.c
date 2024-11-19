@@ -1,9 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "usuario.h"
-#include "models/obterUsuarios.h"
-#include "models/cadastrarUsuario.h"
-#include "models/obterUnicoUsuario.h"
+#include "models/usuarios.h"
 
 int registrarUsuario(){
   char nome[64] = "Teste";
@@ -39,7 +37,7 @@ int buscarUnicoUsuario(){
 }
 
 int listarUsuarios(){
-  obterUsuarios();
+  obterMuitosUsuarios();
 
   return 1;
 }
