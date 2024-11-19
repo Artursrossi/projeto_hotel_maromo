@@ -7,8 +7,7 @@ p_hotel Hotel[32]; //variavel que simula o hotel sendo este tratado como um arra
 
 void cliente_janela();
 
-void inicializa_hotel() // esta funcao inicializa a estrutura hotel atribuindo as classes de quarto para cada um dos itens do Hotel[32]
-{
+void inicializa_hotel() {
     //realizando o loop para percorrer do indice 1 até o 32
     for(int i = 1; i <= 31; i++) {
 

@@ -28,6 +28,9 @@ typedef struct QuartoHotel{
     char quarto_classe;
 } t_quarto_hotel;
 
+/*
+ esta funcao inicializa a estrutura hotel atribuindo as classes de quarto para cada um dos itens do Hotel[32]
+*/
 void inicializa_hotel();
 
 void cliente_janela();

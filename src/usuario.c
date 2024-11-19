@@ -3,55 +3,63 @@
 #include "usuario.h"
 #include "models/usuarios.h"
 
-int registrarUsuario(){
-  char nome[64] = "Teste";
-  char email[32] = "teste@gmail.com";
-  char senha[32] = "123";
-  int idade = 30;
+void registrarUsuario(){
+  char nome[65] = "Maromo Roberto Moraes";
+  char email[33] = "maromo@gmail.com";
+  char senha[17] = "123";
+  int idade = 45;
   cadastrarUsuario(nome, email, senha, idade);
 
 
-  return 1;
+  return;
 }
 
 t_usuario usuario;
-int autenticarUsuario(){
-  usuario.idade = 18;
 
-  char email[32] = "teste@gmail.com";
-  obterUnicoUsuario(email);
+void autenticarUsuario(){
+  char email[33] = "maromo@gmail.com";
+  int res = obterUnicoUsuario(&usuario, email);
+  
+  if(res == 404){
+    printf("Usuário não encontrado"); 
+    return;
+  }
+  if(res == 200){
+    printf("\n\n\n%d\n", usuario.idade);
+    printf("%s", usuario.cadastrado_em);
+  }
 
-  return 1;
+  return;
 }
 
-int deslogarUsuario(){
-  return 1;
+void deslogarUsuario(){
+  return;
 }
 
-int deletarUsuario(){
-  return 1;
+void deletarUsuario(){
+  return;
 }
 
-int buscarUnicoUsuario(){
-  return 1;
+void buscarUnicoUsuario(){
+  return;
 }
 
-int listarUsuarios(){
+void listarUsuarios(){
   obterMuitosUsuarios();
 
-  return 1;
+  return;
 }
 
-int controlarRegistroUsuario(){
+void controlarRegistroUsuario(){
   printf("Cadastrar nova conta \n");
   registrarUsuario();
 
-  return 1;
+  return;
 }
 
-int controlarLoginUsuario(){
+void controlarLoginUsuario(){
   printf("Entrar com uma conta existente \n");
   autenticarUsuario();
 
-  return 1;
+  return;
 }
