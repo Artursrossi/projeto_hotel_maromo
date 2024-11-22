@@ -15,8 +15,8 @@ CREATE TABLE quartos (
   numero SMALLINT NOT NULL,
   tipo CHAR(1) NOT NULL,
   valor_diaria NUMERIC(7,2) NOT NULL,
-  preparado BOOLEAN NOT NULL,
-  ocupado BOOLEAN NOT NULL,
+  preparado BOOLEAN NOT NULL DEFAULT TRUE,
+  ocupado BOOLEAN NOT NULL DEFAULT FALSE,
   modificado_em TIMESTAMP DEFAULT current_timestamp,
   cadastrado_em TIMESTAMP DEFAULT current_timestamp
 );

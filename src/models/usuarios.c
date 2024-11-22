@@ -4,6 +4,7 @@
 #include "../../external/libpq/libpq-fe.h"
 #include "../lib/psql.h"
 #include "../usuario.h"
+#include "../utils/conversoes.h"
 
 int cadastrarUsuario(char nome[65],char email[33],char senha[17],int idade) {
     // Obter conexão com o banco de dados
@@ -26,21 +27,8 @@ int cadastrarUsuario(char nome[65],char email[33],char senha[17],int idade) {
     strcat(query, senha);
     strcat(query, "', ");
 
-    // Converter idade de inteiro para string, relevando que a idade máxima do sistema é 99 anos
-    char s_idade[3];
-    if(idade <= 0 || idade >= 100) return 409; // Retornar CÓDIGO 409 conflito para idade negativa ou maior do que 100
-    // converter idade de 2 digitos
-    if(idade >= 10){
-      s_idade[0] = ((int)(idade / 10) + '0');
-      s_idade[1] = idade % 10 + '0';
-      s_idade[2] = '\0';
-    }
-    // converter idade de 1 digito
-    if(idade < 10){
-      s_idade[0] = idade + '0';
-      s_idade[1] = '\0';
-    }
     // Concatenar Idade
+    char *s_idade = intToCharVetor(idade);
     strcat(query, s_idade);
     strcat(query, ");");
 

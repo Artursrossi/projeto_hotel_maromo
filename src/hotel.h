@@ -50,4 +50,9 @@ void alterar_aluguel();
 */
 void cliente_janela();
 
+/**
+  Lidar com Registro de Quartos
+ */
+void controlarRegistroQuarto();
+
 #endif
