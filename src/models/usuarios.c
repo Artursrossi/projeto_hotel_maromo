@@ -85,7 +85,6 @@ int obterUnicoUsuario(t_usuario *p_usuario, char email[33]) {
     for (int i = 0; i < rows; i++) {
         // Percorrer cada coluna da linha
         for (int j = 0; j < cols; j++) {
-            printf("%s\t", PQgetvalue(res, i, j));
             switch(j){
                 // Obter coluna ID
                 case 0:
@@ -129,8 +128,6 @@ int obterUnicoUsuario(t_usuario *p_usuario, char email[33]) {
                     break;
             }
         }
-        // Pular linha para inserir próximo usuário
-        printf("\n");
     }
 
     // Finalizar conexão com o banco de dados
@@ -141,7 +138,7 @@ int obterUnicoUsuario(t_usuario *p_usuario, char email[33]) {
 }
 
 
-int obterMuitosUsuarios() {
+int obterMuitosUsuarios(t_usuario **p_usuarios, int *numero_usuarios) {
     // Obter conexão com o banco de dados
     PGconn *conn = connection();
 
@@ -165,56 +162,53 @@ int obterMuitosUsuarios() {
     int rows = PQntuples(res);
     int cols = PQnfields(res);
 
-    t_usuario usuario;
+    // Escrever número de usuários no banco de dados no ponteiro recebido
+    *numero_usuarios = rows;
 
     // Percorrer cada linha do banco
     for (int i = 0; i < rows; i++) {
+        int novo_tamanho = i + 2; // Próximo tamanho do vetor
+        *p_usuarios = realloc(*p_usuarios, novo_tamanho * sizeof(t_usuario));
+        /* Verificar se o realloc foi executado com sucesso*/
+        if (p_usuarios == NULL) {
+            printf("Erro ao alocar memória para p_usuarios");
+            return 500; // Retornar CÓDIGO 500 erro na execução
+        }
+
         // Percorrer cada coluna da linha
         for (int j = 0; j < cols; j++) {
-            printf("%s\t", PQgetvalue(res, i, j));
             switch(j){
                 // Obter coluna ID
                 case 0:
-                    usuario.codigo = PQgetvalue(res, i, j)[0] - '0';
+                    (*p_usuarios)[i].codigo = PQgetvalue(res, i, j)[0] - '0';
                     break;
                 // Obter coluna NOME
                 case 1:
-                    strcpy(usuario.nome, PQgetvalue(res, i, j));
+                    strcpy((*p_usuarios)[i].nome, PQgetvalue(res, i, j));
                     break;
                 // Obter coluna EMAIL
                  case 2:
-                    strcpy(usuario.email, PQgetvalue(res, i, j));
+                    strcpy((*p_usuarios)[i].email, PQgetvalue(res, i, j));
                     break;
                 // Obter coluna SENHA
                 case 3:
-                    strcpy(usuario.senha, PQgetvalue(res, i, j));
+                    strcpy((*p_usuarios)[i].senha, PQgetvalue(res, i, j));
                     break;
                 // Obter coluna IDADE
                 case 4:
-                    usuario.idade = PQgetvalue(res, i, j)[0] - '0';
+                    (*p_usuarios)[i].idade = PQgetvalue(res, i, j)[0] - '0';
                     break;
                 // Obter coluna CARGO
                 case 5:
-                    strcpy(usuario.cargo, PQgetvalue(res, i, j));
+                    strcpy((*p_usuarios)[i].cargo, PQgetvalue(res, i, j));
                     break;
                 // Obter coluna CADASTRADO_EM
                 case 6:
-                    strcpy(usuario.cadastrado_em, PQgetvalue(res, i, j));
+                    strcpy((*p_usuarios)[i].cadastrado_em, PQgetvalue(res, i, j));
                     break;
             }
         }
-        // Pular linha para inserir próximo usuário
-        printf("\n");
     }
-
-    printf("---------------------------------\n");
-    printf("%d\n", usuario.codigo);
-    printf("%s\n", usuario.nome);
-    printf("%s\n", usuario.email);
-    printf("%s\n", usuario.senha);
-    printf("%d\n", usuario.idade);
-    printf("%s\n", usuario.cargo);
-    printf("%s\n", usuario.cadastrado_em);
 
     // Finalizar conexão com o banco de dados
     PQclear(res);

@@ -1,11 +1,12 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "usuario.h"
 #include "models/usuarios.h"
 
 void registrarUsuario(){
   char nome[65] = "Maromo Roberto Moraes";
-  char email[33] = "maromo@gmail.com";
+  char email[33] = "maromo@email.com";
   char senha[17] = "123";
   int idade = 45;
   cadastrarUsuario(nome, email, senha, idade);
@@ -17,7 +18,7 @@ void registrarUsuario(){
 t_usuario usuario;
 
 void autenticarUsuario(){
-  char email[33] = "maromo@gmail.com";
+  char email[33] = "maromo@email.com";
   int res = obterUnicoUsuario(&usuario, email);
   
   if(res == 404){
@@ -45,7 +46,14 @@ void buscarUnicoUsuario(){
 }
 
 void listarUsuarios(){
-  obterMuitosUsuarios();
+  t_usuario *usuarios = malloc(sizeof(t_usuario));
+  int numero_usuarios;
+
+  obterMuitosUsuarios(&usuarios, &numero_usuarios);
+
+  for (int i = 0; i < numero_usuarios; i++) {
+    printf("Nome: %s, Email: %s, Idade: %d, Cadastrado em: %s \n", usuarios[i].nome, usuarios[i].email, usuarios[i].idade, usuarios[i].cadastrado_em);
+  }
 
   return;
 }
@@ -59,7 +67,8 @@ void controlarRegistroUsuario(){
 
 void controlarLoginUsuario(){
   printf("Entrar com uma conta existente \n");
-  autenticarUsuario();
+  listarUsuarios();
+  // autenticarUsuario();
 
   return;
 }
