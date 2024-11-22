@@ -3,42 +3,51 @@
 
 #include <stdbool.h>
 
-#include <stdbool.h>
-
-// extern struct QuartoHotel{
-//     bool quarto_preparado;
-//     int quarto_numero;
-//     char numero_ocupantes;
-//     bool quarto_ocupado; //flag para checar se o quarto está ocupado ou não 0 para falso e 1 para verdadeiro
-
-//     float quarto_valor_aluguel;
-
-//     char quarto_classe;
-// } t_quarto_hotel;
-
 //simula um quarto e suas caracteristicas de interesse gerencial
-typedef struct QuartoHotel{
-    bool quarto_preparado;
-    int quarto_numero;
-    char numero_ocupantes;
-    bool quarto_ocupado; //flag para checar se o quarto está ocupado ou não 0 para falso e 1 para verdadeiro
+typedef struct Quarto{
+    int codigo;
+    int numero;
+    char tipo;
+    float valor_diaria;
+    bool preparado;
+    bool ocupado;
+    char modificado_em[11];
+    char cadastrado_em[11];
+} t_quarto;
 
-    float quarto_valor_aluguel;
-
-    char quarto_classe;
-} t_quarto_hotel;
+typedef struct RegistroAluguel{
+    int codigo;
+    int quarto_escolhido;
+    int usuario_relacionado;
+    int periodo_dias;
+    float valor_total;
+    int numero_ocupantes;
+    char alugado_em[11];
+} t_registro_aluguel;
 
 /*
  esta funcao inicializa a estrutura hotel atribuindo as classes de quarto para cada um dos itens do Hotel[32]
 */
 void inicializa_hotel();
 
-void cliente_janela();
-
+/*
+  Esta funcao permite que o usuario alugue um quarto
+*/ 
 void alugar_quarto();
 
-void alterar_aluguel(); // atualiza informações do quarto
-
+/*
+  Essa função reseta o quarto que o usuario informa, liberando-o para aluguel novamente
+*/
 void desalugar_quarto();
+
+/*
+  Atualiza informações do quarto
+*/
+void alterar_aluguel(); 
+
+/*
+  Esta funcao simula um menu para o usuario
+*/
+void cliente_janela();
 
 #endif

@@ -2,21 +2,20 @@
 #include <malloc.h>
 #include "hotel.h"
 
-typedef t_quarto_hotel *p_hotel; // variavel que cria um ponteiro apontando para a estrutura quarto_hotel
-p_hotel Hotel[32]; //variavel que simula o hotel sendo este tratado como um array contendo 100 quartos
+typedef t_quarto *p_quarto; // variavel que cria um ponteiro apontando para a estrutura quarto_hotel
+p_quarto Hotel[32]; //variavel que simula o hotel sendo este tratado como um array contendo 100 quartos
 
-void cliente_janela();
-
+// TODO: Refatorar essa função para suportar as novas estruturas de Quarto e RegistroAluguel
 void inicializa_hotel() {
     //realizando o loop para percorrer do indice 1 até o 32
     for(int i = 1; i <= 31; i++) {
 
-        Hotel[i] = (p_hotel)malloc(sizeof(t_quarto_hotel));
+        Hotel[i] = (p_quarto)malloc(sizeof(t_quarto_hotel));
         if(i <= 16)
         {
             Hotel[i]->quarto_preparado = true;
-            Hotel[i]->quarto_numero = i;
-            Hotel[i]->quarto_classe = 'C';
+            Hotel[i]->numero = i;
+            Hotel[i]->tipo = 'C';
             Hotel[i]->quarto_ocupado = false;
             Hotel[i]->quarto_valor_aluguel = 0;
             Hotel[i]->numero_ocupantes = 0;
@@ -27,8 +26,8 @@ void inicializa_hotel() {
         else if(i > 16 && i <= 24)
         {
             Hotel[i]->quarto_preparado = true;
-            Hotel[i]->quarto_numero = i;
-            Hotel[i]->quarto_classe = 'B';
+            Hotel[i]->numero = i;
+            Hotel[i]->tipo = 'B';
             Hotel[i]->quarto_ocupado = false;
             Hotel[i]->quarto_valor_aluguel = 0;
             Hotel[i]->numero_ocupantes = 0;
@@ -37,8 +36,8 @@ void inicializa_hotel() {
         {
 
             Hotel[i]->quarto_preparado = true;
-            Hotel[i]->quarto_numero = i;
-            Hotel[i]->quarto_classe = 'A';
+            Hotel[i]->numero = i;
+            Hotel[i]->tipo = 'A';
             Hotel[i]->quarto_ocupado = false;
             Hotel[i]->quarto_valor_aluguel = 0;
             Hotel[i]->numero_ocupantes = 0;
@@ -46,8 +45,8 @@ void inicializa_hotel() {
         else if(i > 30 && i <= 33)
         {
             Hotel[i]->quarto_preparado = true;
-            Hotel[i]->quarto_numero = i;
-            Hotel[i]->quarto_classe = 'M';
+            Hotel[i]->numero = i;
+            Hotel[i]->tipo = 'M';
             Hotel[i]->quarto_ocupado = false;
             Hotel[i]->quarto_valor_aluguel = 0;
             Hotel[i]->numero_ocupantes = 0;
@@ -55,9 +54,8 @@ void inicializa_hotel() {
     }
 };
 
-
-void alugar_quarto() // esta funcao permite que o usuario alugue um quarto
-{
+// TODO: Refatorar essa função para suportar as novas estruturas de Quarto e RegistroAluguel
+void alugar_quarto() {
     int min_room = 0;
     int max_room = 0;
     int numero = 0;
@@ -102,7 +100,7 @@ void alugar_quarto() // esta funcao permite que o usuario alugue um quarto
 
     }
     for(int i = 1; i < 33; i++) {
-        if(Hotel[i]->quarto_classe == tipo){
+        if(Hotel[i]->tipo == tipo){
             /** procura quais são os indices para o tipo de quarto especificado **/
             if(min_room == 0)
             {
@@ -114,7 +112,7 @@ void alugar_quarto() // esta funcao permite que o usuario alugue um quarto
             }
 
 
-            printf("%d ", Hotel[i]->quarto_numero);
+            printf("%d ", Hotel[i]->numero);
         }}
 
     /** Obtendo o numero do quarto **/
@@ -171,8 +169,8 @@ void alugar_quarto() // esta funcao permite que o usuario alugue um quarto
     }
 }
 
-void desalugar_quarto() //essa função reseta o quarto que o usuario informa, liberando-o para aluguel novamente
-{
+// TODO: Refatorar essa função para suportar as novas estruturas de Quarto e RegistroAluguel
+void desalugar_quarto() {
     int numero = 0;
     int ocupantes = 0;
     float quarto_preco = 0;
@@ -207,8 +205,8 @@ void desalugar_quarto() //essa função reseta o quarto que o usuario informa, l
     }
 }
 
-void alterar_aluguel()
-{
+// TODO: Refatorar essa função para suportar as novas estruturas de Quarto e RegistroAluguel
+void alterar_aluguel(){
     char tipo = '0';
     int numero = 0;
     int novo_numero_quarto;
@@ -241,7 +239,7 @@ void alterar_aluguel()
             case 1:
             {
                 // verificao para checar se o novo quarto alugado sera do mesmo tipo e esta disponivel
-                tipo = Hotel[numero]->quarto_classe;
+                tipo = Hotel[numero]->tipo;
                 while(novo_numero_quarto == 0)
                 {
                     printf("por favor informe qual quarto voce gostaria de alugar!\n");
@@ -253,7 +251,7 @@ void alterar_aluguel()
                         novo_numero_quarto = 0;
                     }
 
-                    if(Hotel[novo_numero_quarto]->quarto_classe != tipo)
+                    if(Hotel[novo_numero_quarto]->tipo != tipo)
                     {
                         printf("o quarto escolhido nao e do mesmo tipo que o seu atual por favor escolha outro!\n");
                         novo_numero_quarto = 0;
@@ -313,8 +311,7 @@ void alterar_aluguel()
 
 }
 
-void cliente_janela() //esta funcao simula um menu para o usuario
-{
+void cliente_janela() {
     int opcao = 0;
     printf("-- Seja bem vindo --\n");
     printf("-- Escolha um de nossos servicos --\n");
