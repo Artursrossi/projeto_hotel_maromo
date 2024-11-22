@@ -14,6 +14,6 @@ int obterUnicoUsuario(t_usuario *p_usuario,char email[33]);
 /*
   Obter todos os usuários do banco de dados
  */
-int obterMuitosUsuarios();
+int obterMuitosUsuarios(t_usuario **p_usuarios, int *numero_usuarios);
 
 #endif

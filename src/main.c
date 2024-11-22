@@ -44,8 +44,8 @@ void controlarMenuInicial(){
       controlarLoginUsuario();
       break;
     case 2:
-      // controlarRegistroUsuario();
-      controlarRegistroQuarto();
+      controlarRegistroUsuario();
+      // controlarRegistroQuarto();
       break;
   }
 }
