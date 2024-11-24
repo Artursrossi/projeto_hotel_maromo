@@ -345,6 +345,19 @@ p_quarto Hotel[32]; //variavel que simula o hotel sendo este tratado como um arr
 //     }
 // }
 
+void listarQuartos(){
+  t_quarto *quartos = malloc(sizeof(t_quarto));
+  int numero_quartos;
+
+  obterMuitosQuartos(&quartos, &numero_quartos);
+
+  for (int i = 0; i < numero_quartos; i++) {
+    printf("Codigo: %d, Numero: %d, Tipo: %c, Valor diaria: %.2f, Modificado em: %s, Cadastrado em: %s \n", quartos[i].codigo, quartos[i].numero, quartos[i].tipo, quartos[i].valor_diaria, quartos[i].modificado_em, quartos[i].cadastrado_em);
+  }
+
+  return;
+}
+
 void controlarRegistroQuarto(){
     int numero = 111;
     char tipo = 'A';

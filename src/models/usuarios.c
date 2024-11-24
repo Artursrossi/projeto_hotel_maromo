@@ -180,7 +180,9 @@ int obterMuitosUsuarios(t_usuario **p_usuarios, int *numero_usuarios) {
             switch(j){
                 // Obter coluna ID
                 case 0:
-                    (*p_usuarios)[i].codigo = PQgetvalue(res, i, j)[0] - '0';
+                    int codigo = 0;
+                    sscanf(PQgetvalue(res, i, j), "%d", &codigo); // Transformar string em inteiro
+                    (*p_usuarios)[i].codigo = codigo;
                     break;
                 // Obter coluna NOME
                 case 1:
@@ -196,7 +198,9 @@ int obterMuitosUsuarios(t_usuario **p_usuarios, int *numero_usuarios) {
                     break;
                 // Obter coluna IDADE
                 case 4:
-                    (*p_usuarios)[i].idade = PQgetvalue(res, i, j)[0] - '0';
+                    int idade = 0;
+                    sscanf(PQgetvalue(res, i, j), "%d", &idade); // Transformar string em inteiro   
+                    (*p_usuarios)[i].idade = idade;
                     break;
                 // Obter coluna CARGO
                 case 5:
