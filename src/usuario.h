@@ -11,44 +11,26 @@ typedef struct Usuario {
     char cadastrado_em[11];
 } t_usuario;
 
-/*
-  Registrar usuário
- */
-void registrarUsuario();
-
-/*
-  Autenticar usuário
- */
-void autenticarUsuario();
-
-/*
-  Deslogar usuário
- */
-void deslogarUsuario();
-
-/*
-  Deletar usuário
- */
-void deletarUsuario();
-
-/*
-  Buscar um único usuário
- */
-void buscarUnicoUsuario();
-
-/*
-  Listar usuários
- */
-void listarUsuarios();
+extern t_usuario usuario;
 
 /*
   Lidar com Registro de Usuários
  */
-void controlarRegistroUsuario();
+int registrarUsuario();
 
 /*
   Lidar com Login do Usuários
  */
-void controlarLoginUsuario();
+int autenticarUsuario();
+
+/*
+  Listar usuários
+ */
+int listarUsuarios();
+
+/*
+  Deslogar usuário
+ */
+int deslogarUsuario();
 
 #endif
