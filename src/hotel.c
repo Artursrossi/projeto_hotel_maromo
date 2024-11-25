@@ -9,7 +9,7 @@ p_quarto Hotel[32]; //variavel que simula o hotel sendo este tratado como um arr
 typedef t_registro* p_registro // variavel que cria um ponteiro apontando para a estrutura RegistroAluguel
 p_registro Registro[32]; // variavel que registra o aluguel de um quarto contendo 32 possiveis alugueis para 32 quartos
 
-// TODO: Refatorar essa função para suportar as novas estruturas de Quarto e RegistroAluguel
+// TODO: Verificar se tudo isso ainda funciona!
 void inicializa_hotel() {
     //realizando o loop para percorrer do indice 1 até o 32
     for (int i = 1; i <= 31; i++) {
@@ -268,14 +268,16 @@ void alterar_aluguel() {
             // disponibilidade
             Hotel[novo_numero_quarto]->quarto_ocupado = true;
             Hotel[numero]->quarto_ocupado = false;
+            Registro[numero]->quarto_ocupado = novo_numero_quarto;
 
             //valor do aluguel
-            Hotel[novo_numero_quarto]->quarto_valor_aluguel = Hotel[numero]->quarto_valor_aluguel;
-            Hotel[numero]->quarto_valor_aluguel = 0;
+            Registro[novo_numero_quarto]->valor_total = Registro[numero]->valor_total;
+            Registro[numero]->valor_total = 0;
+            
 
             //numero de ocupantes
-            Hotel[novo_numero_quarto]->numero_ocupantes = Hotel[numero]->numero_ocupantes;
-            Hotel[numero]->numero_ocupantes = 0;
+            Registro[novo_numero_quarto]->numero_ocupantes = Registro[numero]->numero_ocupantes;
+            Registro[numero]->numero_ocupantes = 0;
 
             printf("a alterecao de quartos foi realizada com sucesso!\n");
             cliente_janela();
@@ -295,7 +297,7 @@ void alterar_aluguel() {
                     novo_numero_ocupantes = 0;
                 }
             }
-            Hotel[novo_numero_quarto]->numero_ocupantes = novo_numero_ocupantes;
+            Registro[novo_numero_quarto]->numero_ocupantes = novo_numero_ocupantes;
             printf("o numero de hospedes foi alterado com sucesso para %d!\n", novo_numero_ocupantes);
             cliente_janela();
             break;
@@ -317,13 +319,34 @@ void alterar_aluguel() {
 
 }
 
-void cliente_janela() {
+void gerarRecibo()
+{
+    int quarto_numero;
+    printf("digite o numero do quarto");
+    scanf("%d", &quarto_numero);
+
+    int numero_quarto = Hotel[quarto_numero]->quarto_numero;
+    int preco = Registro[quarto_numero]->valor_total;
+    int ocupantes = Registro[quarto_numero]->numero_ocupantes;
+
+    printf("-- Recibo para quarto alugado--");
+    printf("-- Numero do quarto -> %d --", numero_quarto);
+    printf("-- Preco para o aluguel %d --", preco);
+    printf("-- numero de ocupantes %d", ocupantes);
+
+}
+
+void cliente_janela() //esta funcao simula um menu para o usuario
+{
     int opcao = 0;
     printf("-- Seja bem vindo --\n");
     printf("-- Escolha um de nossos servicos --\n");
     printf("-- 1 Alugar quarto --\n");
     printf("-- 2 Desalugar quarto --\n");
     printf("-- 3 Editar quarto --\n");
+    printf("-- 4 Gerar recibo para o quarto --\n");
+    printf("-- 9 Sair --\n");
+
     scanf("%d", &opcao);
     switch (opcao)
     {
@@ -342,6 +365,17 @@ void cliente_janela() {
         alterar_aluguel();
         break;
     }
+    case 4:
+    {
+        gerarRecibo();
+        break;
+    }
+    case 9:
+    {
+        printf("Saindo do programa!");
+
+        break;
+    }
     default:
     {
         printf("por favor informe uma opcao valida\n");
@@ -349,6 +383,9 @@ void cliente_janela() {
     }
     }
 }
+
+
+
 
 void controlarRegistroQuarto() {
     int numero = 111;
