@@ -62,7 +62,7 @@ void exibirMenuLogado(){
   printf("2 - Alugar um quarto \n");
   printf("3 - Fazer CheckOut do quarto \n");
   printf("4 - Alterar informações da reserva atual \n");
-  printf("5 - Gerar recibo da reserva atual \n");
+  printf("5 - Gerar histórico de reservas \n");
   printf("6 - Sair da conta \n");
 
   if(strcmp(usuario.cargo, "ADMINISTRADOR") == 0) printf("7 - Acessar área administrativa \n");
@@ -105,7 +105,7 @@ void controlarMenuLogado(){
       }
       break;
     case 5:
-      res = gerarReciboDaReserva();
+      res = gerarHistoricoReservas();
       if(res == 200){
         controlarMenuLogado();
       }

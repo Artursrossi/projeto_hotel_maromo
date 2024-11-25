@@ -4,7 +4,12 @@
 /*
   Cadastrar Quarto no banco de dados
  */
-int cadastrarQuarto(int numero,char tipo,float valor_diaria);
+int cadastrarQuarto(int numero, char tipo, float valor_diaria);
+
+/*
+  Cadastrar Quarto no banco de dados
+ */
+int cadastrarRegistroAluguel(int codigo_quarto_escolhido, int codigo_usuario, int periodo_dias, float valor_total, int numero_ocupantes);
 
 /*
   Obter todos os quartos do banco de dados

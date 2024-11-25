@@ -6,12 +6,13 @@
 #include "../usuario.h"
 #include "../utils/conversoes.h"
 
-int cadastrarUsuario(char nome[65],char email[33],char senha[17],int idade) {
+int cadastrarUsuario(char nome[65], char email[33], char senha[17], int idade) {
     // Obter conexão com o banco de dados
     PGconn *conn = connection();
 
     // SQL para ser executado
     char query[192] = "INSERT INTO usuarios (nome, email, senha, idade) VALUES ";
+
     // Concatenar Nome
     strcat(query, "('");
     strcat(query, nome);
@@ -58,6 +59,8 @@ int obterUnicoUsuario(t_usuario *p_usuario, char email[33]) {
 
     // SQL para ser executado
     char query[192] = "SELECT * FROM usuarios WHERE email = ";
+
+    // Concatenar email
     strcat(query, "'");
     strcat(query, email);
     strcat(query, "'");
@@ -137,7 +140,6 @@ int obterUnicoUsuario(t_usuario *p_usuario, char email[33]) {
     return 200; // Retornar CÓDIGO 200 sucesso
 }
 
-
 int obterMuitosUsuarios(t_usuario **p_usuarios, int *numero_usuarios) {
     // Obter conexão com o banco de dados
     PGconn *conn = connection();
@@ -155,7 +157,7 @@ int obterMuitosUsuarios(t_usuario **p_usuarios, int *numero_usuarios) {
     if (resStatus != PGRES_TUPLES_OK) {
         PQclear(res);
         PQfinish(conn);
-        exit(1);
+        return 500; // Retornar CÓDIGO 500 para erro de execução
     }
 
     // Obter número de linhas e colunas

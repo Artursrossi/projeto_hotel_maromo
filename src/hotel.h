@@ -43,7 +43,7 @@ int alterarReservaAtual();
 /**
   Lidar com Registro de Quartos
  */
-int gerarReciboDaReserva();
+int gerarHistoricoReservas();
 
 /**
   Listar todos os quartos
