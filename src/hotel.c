@@ -11,7 +11,26 @@ typedef t_registro_aluguel *p_registro; // variavel que cria um ponteiro apontan
 p_registro Registro[32]; // variavel que registra o aluguel de um quarto contendo 32 possiveis alugueis para 32 quartos
 
 int alugarQuarto() {
-     int min_room = 0;
+    int codigo_quarto_escolhido = 1;
+    int codigo_usuario = 1;
+    int periodo_dias = 5;
+    float valor_total = 1675.5;
+    int numero_ocupantes = 2;
+
+    int res = 0; // flag para salvar código de retorno da função
+    res = cadastrarRegistroAluguel(codigo_quarto_escolhido, codigo_usuario, periodo_dias, valor_total, numero_ocupantes);
+
+    // Checar possibilidades de retorno da função
+    if(res == 404){
+        printf("Quarto não encontrado \n");
+        return 200;
+    }
+    if(res != 201){
+        printf("Ocorreu um erro inesperado. Tente novamente mais tarde...");
+        return 200;
+    }
+
+    int min_room = 0;
     int max_room = 0;
     int numero = 0; //se refere ao numero do quarto escolhido só agora que eu vi que esse nome é horrivel
     int ocupantes = 0;
@@ -259,7 +278,7 @@ int alterarReservaAtual(){
     return 200;
 }
 
-int gerarReciboDaReserva(){
+int gerarHistoricoReservas(){
     int quarto_numero;
     printf("digite o numero do quarto");
     scanf("%d", &quarto_numero);
@@ -277,23 +296,41 @@ int gerarReciboDaReserva(){
 }
 
 int listarQuartos(){
-  printf("1, %s", usuario.nome);
-  t_quarto *quartos = malloc(sizeof(t_quarto));
-  int numero_quartos;
+    printf("1, %s", usuario.nome);
+    t_quarto *quartos = malloc(sizeof(t_quarto));
+    int numero_quartos;
 
-  obterMuitosQuartos(&quartos, &numero_quartos);
+    int res = 0; // flag para salvar código de retorno da função
+    res = obterMuitosQuartos(&quartos, &numero_quartos);
 
-  for (int i = 0; i < numero_quartos; i++) {
-    printf("Codigo: %d, Numero: %d, Tipo: %c, Valor diaria: %.2f, Modificado em: %s, Cadastrado em: %s \n", quartos[i].codigo, quartos[i].numero, quartos[i].tipo, quartos[i].valor_diaria, quartos[i].modificado_em, quartos[i].cadastrado_em);
-  }
+    // Checar possibilidades de retorno da função
+    if(res != 200){
+        printf("Ocorreu um erro inesperado. Tente novamente mais tarde...");
+        return 200;
+    }
 
-  return 200;
+    for (int i = 0; i < numero_quartos; i++) {
+        printf("Codigo: %d, Numero: %d, Tipo: %c, Valor diaria: %.2f, Modificado em: %s, Cadastrado em: %s \n", quartos[i].codigo, quartos[i].numero, quartos[i].tipo, quartos[i].valor_diaria, quartos[i].modificado_em, quartos[i].cadastrado_em);
+    }
+
+    return 200;
 }
 
 int registrarQuarto(){
     int numero = 111;
     char tipo = 'A';
     float valor_diaria = 276.50;
-    cadastrarQuarto(numero, tipo, valor_diaria);
+
+    int res = 0; // flag para salvar código de retorno da função
+    res = cadastrarQuarto(numero, tipo, valor_diaria);
+
+    // Checar possibilidades de retorno da função
+    if(res != 201){
+        printf("Ocorreu um erro inesperado. Tente novamente mais tarde...");
+        return 200;
+    }
+
+    printf("Quarto cadastrado com sucesso!");
+
     return 200;
 }
