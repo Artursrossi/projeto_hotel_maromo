@@ -26,33 +26,33 @@ typedef struct RegistroAluguel{
 } t_registro_aluguel;
 
 /*
- esta funcao inicializa a estrutura hotel atribuindo as classes de quarto para cada um dos itens do Hotel[32]
-*/
-void inicializa_hotel();
-
-/*
   Esta funcao permite que o usuario alugue um quarto
 */ 
-void alugar_quarto();
+int alugarQuarto();
 
 /*
   Essa função reseta o quarto que o usuario informa, liberando-o para aluguel novamente
 */
-void desalugar_quarto();
+int desalugarQuarto();
 
 /*
   Atualiza informações do quarto
 */
-void alterar_aluguel(); 
-
-/*
-  Esta funcao simula um menu para o usuario
-*/
-void cliente_janela();
+int alterarReservaAtual(); 
 
 /**
   Lidar com Registro de Quartos
  */
-void controlarRegistroQuarto();
+int gerarReciboDaReserva();
+
+/**
+  Listar todos os quartos
+ */
+int listarQuartos();
+
+/**
+  Lidar com Registro de Quartos
+ */
+int registrarQuarto();
 
 #endif
