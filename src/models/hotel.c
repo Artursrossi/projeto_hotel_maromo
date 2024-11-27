@@ -310,3 +310,36 @@ int obterUnicoQuartoPorCodigo(t_quarto *p_quarto, int codigo_quarto) {
 
     return 200; // Retornar CÓDIGO 200 sucesso
 }
+
+int ocuparQuarto(int codigo_quarto) {
+ // Obter conexão com o banco de dados
+    PGconn *conn = connection();
+
+    // SQL para ser executado
+    char query[192] = "UPDATE quartos SET ocupado = true WHERE codigo = ";
+
+    // Concatenar codigo_quarto
+    char *s_codigo_quarto = intToCharVetor(codigo_quarto);
+    strcat(query, "'");
+    strcat(query, s_codigo_quarto);
+    strcat(query, "';");
+
+    // Obter resposta do SQL executado
+    PGresult *res = PQexec(conn, query);
+
+    // Obter código de resposta da chamada ao banco
+    ExecStatusType resStatus = PQresultStatus(res);
+
+    // Fazer a captação de possíveis erros
+    if (resStatus != PGRES_TUPLES_OK) {
+      PQclear(res);
+      PQfinish(conn);
+      return 500; // Retornar CÓDIGO 500 para erro de execução
+    }
+
+    // Finalizar conexão com o banco de dados
+    PQclear(res);
+    PQfinish(conn);
+
+    return 200; // Retornar CÓDIGO 200 sucesso
+}

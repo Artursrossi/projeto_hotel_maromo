@@ -32,6 +32,15 @@ int alugarQuarto() {
         return 200;
     }
 
+    // Definir quarto como ocupado no banco de dados
+    int statusOcuparQuarto = ocuparQuarto(quarto.codigo);
+
+    // Checar possibilidades de retorno da função
+    if(statusOcuparQuarto != 200){
+        printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
+        return 200;
+    }
+
     // Definir valor total do aluguel
     float valor_total = quarto.valor_diaria * periodo_dias;
 
@@ -43,6 +52,7 @@ int alugarQuarto() {
         printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
         return 200;
     }
+
 
     int min_room = 0;
     int max_room = 0;
