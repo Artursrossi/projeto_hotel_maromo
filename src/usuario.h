@@ -33,4 +33,11 @@ int listarUsuarios();
  */
 int deslogarUsuario();
 
+// funcao que valida o cadastro do email é valido! assumindo que tudo que possa estar de erado com um email é a falta de um "@"
+int validacao_email(char* array);
+
+// funcao que verifica se a senha cadastrada é valida! uma senha valida deve conter letras e numeros
+
+int validacao_senha(char* senha);
+
 #endif
