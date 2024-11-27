@@ -26,4 +26,9 @@ int obterUnicoQuartoPorCodigo(t_quarto *p_quarto, int codigo_quarto);
  */
 int ocuparQuarto(int codigo_quarto);
 
+/* 
+  Modificar, na tabela de quartos, a coluna "ocupado" para true
+ */
+int desocuparQuarto(int codigo_quarto);
+
 #endif

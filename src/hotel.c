@@ -167,7 +167,33 @@ int alugarQuarto() {
 }
 
 int desalugarQuarto() {
-     int numero = 0;
+    // Declarar variáveis necessárias
+    int codigo_quarto_escolhido = 1;
+
+    // Obter informações relacionadas ao quarto escolhido
+    t_quarto quarto;
+    int statusObterUnicoQuartoPorCodigo = obterUnicoQuartoPorCodigo(&quarto, codigo_quarto_escolhido);
+
+    // Checar possibilidades de retorno da função
+    if(statusObterUnicoQuartoPorCodigo == 404){
+        printf("Quarto não encontrado \n");
+        return 200;
+    }
+    if(statusObterUnicoQuartoPorCodigo != 200){
+        printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
+        return 200;
+    }
+
+    // Definir quarto como ocupado no banco de dados
+    int statusDesocuparQuarto = desocuparQuarto(quarto.codigo);
+
+    // Checar possibilidades de retorno da função
+    if(statusDesocuparQuarto != 200){
+        printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
+        return 200;
+    }
+
+    int numero = 0;
     int ocupantes = 0;
     float quarto_preco = 0;
     char resposta;
