@@ -16,4 +16,9 @@ int cadastrarRegistroAluguel(int codigo_quarto_escolhido, int codigo_usuario, in
  */
 int obterMuitosQuartos(t_quarto **p_quartos, int *numero_quartos);
 
+/*
+  Obter único quartos por id
+ */
+int obterUnicoQuartoPorCodigo(t_quarto *p_quarto, int codigo_quarto);
+
 #endif
