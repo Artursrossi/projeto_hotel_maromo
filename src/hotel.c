@@ -3,6 +3,7 @@
 #include "hotel.h"
 #include "usuario.h"
 #include "models/hotel.h"
+#include "models/usuarios.h"
 
 typedef t_quarto *p_quarto; // variavel que cria um ponteiro apontando para a estrutura quarto_hotel
 p_quarto Hotel[32]; //variavel que simula o hotel sendo este tratado como um array contendo 100 quartos
@@ -11,24 +12,47 @@ typedef t_registro_aluguel *p_registro; // variavel que cria um ponteiro apontan
 p_registro Registro[32]; // variavel que registra o aluguel de um quarto contendo 32 possiveis alugueis para 32 quartos
 
 int alugarQuarto() {
+    // Declarar variáveis necessárias
     int codigo_quarto_escolhido = 1;
     int codigo_usuario = 1;
     int periodo_dias = 5;
-    float valor_total = 1675.5;
     int numero_ocupantes = 2;
 
-    int res = 0; // flag para salvar código de retorno da função
-    res = cadastrarRegistroAluguel(codigo_quarto_escolhido, codigo_usuario, periodo_dias, valor_total, numero_ocupantes);
+    // Obter informações relacionadas ao quarto escolhido
+    t_quarto quarto;
+    int statusObterUnicoQuartoPorCodigo = obterUnicoQuartoPorCodigo(&quarto, codigo_quarto_escolhido);
 
     // Checar possibilidades de retorno da função
-    if(res == 404){
+    if(statusObterUnicoQuartoPorCodigo == 404){
         printf("Quarto não encontrado \n");
         return 200;
     }
-    if(res != 201){
-        printf("Ocorreu um erro inesperado. Tente novamente mais tarde...");
+    if(statusObterUnicoQuartoPorCodigo != 200){
+        printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
         return 200;
     }
+
+    // Definir quarto como ocupado no banco de dados
+    int statusOcuparQuarto = ocuparQuarto(quarto.codigo);
+
+    // Checar possibilidades de retorno da função
+    if(statusOcuparQuarto != 200){
+        printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
+        return 200;
+    }
+
+    // Definir valor total do aluguel
+    float valor_total = quarto.valor_diaria * periodo_dias;
+
+    // Cadastrar registro aluguel e obter status do retorno
+    int statusCadastrarRegistroAluguel = cadastrarRegistroAluguel(codigo_quarto_escolhido, codigo_usuario, periodo_dias, valor_total, numero_ocupantes);
+
+    // Checar possibilidades de retorno da função
+    if(statusCadastrarRegistroAluguel != 201){
+        printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
+        return 200;
+    }
+
 
     int min_room = 0;
     int max_room = 0;
@@ -143,7 +167,33 @@ int alugarQuarto() {
 }
 
 int desalugarQuarto() {
-     int numero = 0;
+    // Declarar variáveis necessárias
+    int codigo_quarto_escolhido = 1;
+
+    // Obter informações relacionadas ao quarto escolhido
+    t_quarto quarto;
+    int statusObterUnicoQuartoPorCodigo = obterUnicoQuartoPorCodigo(&quarto, codigo_quarto_escolhido);
+
+    // Checar possibilidades de retorno da função
+    if(statusObterUnicoQuartoPorCodigo == 404){
+        printf("Quarto não encontrado \n");
+        return 200;
+    }
+    if(statusObterUnicoQuartoPorCodigo != 200){
+        printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
+        return 200;
+    }
+
+    // Definir quarto como ocupado no banco de dados
+    int statusDesocuparQuarto = desocuparQuarto(quarto.codigo);
+
+    // Checar possibilidades de retorno da função
+    if(statusDesocuparQuarto != 200){
+        printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
+        return 200;
+    }
+
+    int numero = 0;
     int ocupantes = 0;
     float quarto_preco = 0;
     char resposta;

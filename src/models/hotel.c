@@ -78,7 +78,7 @@ int cadastrarRegistroAluguel(int codigo_quarto_escolhido, int codigo_usuario, in
     strcat(query, s_valor_total);
     strcat(query, ", ");
 
-        // Concatenar valor_total
+    // Concatenar valor_total
     char *s_numero_ocupantes = intToCharVetor(numero_ocupantes);
     strcat(query, s_numero_ocupantes);
     strcat(query, ");");
@@ -199,6 +199,175 @@ int obterMuitosQuartos(t_quarto **p_quartos, int *numero_quartos) {
                     break;
             }
         }
+    }
+
+    // Finalizar conexão com o banco de dados
+    PQclear(res);
+    PQfinish(conn);
+
+    return 200; // Retornar CÓDIGO 200 sucesso
+}
+
+int obterUnicoQuartoPorCodigo(t_quarto *p_quarto, int codigo_quarto) {
+ // Obter conexão com o banco de dados
+    PGconn *conn = connection();
+
+    // SQL para ser executado
+    char query[192] = "SELECT * FROM quartos WHERE codigo = ";
+
+    // Concatenar codigo_quarto
+    char *s_codigo_quarto = intToCharVetor(codigo_quarto);
+    strcat(query, "'");
+    strcat(query, s_codigo_quarto);
+    strcat(query, "';");
+
+    // Obter resposta do SQL executado
+    PGresult *res = PQexec(conn, query);
+
+    // Obter código de resposta da chamada ao banco
+    ExecStatusType resStatus = PQresultStatus(res);
+
+    // Fazer a captação de possíveis erros
+    if (resStatus != PGRES_TUPLES_OK) {
+      PQclear(res);
+      PQfinish(conn);
+      return 500; // Retornar CÓDIGO 500 para erro de execução
+    }
+
+    // Obter número de linhas e colunas
+    int rows = PQntuples(res);
+    int cols = PQnfields(res);
+
+    if(rows == 0) return 404; // Retornar CÓDIGO 404 para quarto não encontrado
+    if(rows > 1) return 400; // Retornar CÓDIGO 400 para erro de entrada, caso o id seja duplicado
+
+    // Percorrer cada linha do banco
+    for (int i = 0; i < rows; i++) {
+        // Percorrer cada coluna da linha
+        for (int j = 0; j < cols; j++) {
+            switch(j){
+                //Obter coluna CODIGO
+                case 0:
+                    int codigo = 0;
+                    sscanf(PQgetvalue(res, i, j), "%d", &codigo); // Transformar string em inteiro  
+                    p_quarto->codigo = codigo;
+                    break;
+                // Obter coluna NUMERO
+                case 1:
+                    int numero = 0;
+                    sscanf(PQgetvalue(res, i, j), "%d", &numero); // Transformar string em inteiro 
+                    p_quarto->numero = numero;
+                    break;
+                // Obter coluna TIPO
+                 case 2:
+                    p_quarto->tipo = PQgetvalue(res, i, j)[0];
+                    break;
+                // Obter coluna VALOR_DIARIA
+                case 3:
+                    float valor_diaria = 0.0;
+                    sscanf(PQgetvalue(res, i, j), "%f", &valor_diaria); // Transformar string em inteiro 
+                    p_quarto->valor_diaria = valor_diaria;
+                    break;
+                // Obter coluna PREPARADO
+                case 4:
+                    p_quarto->preparado = PQgetvalue(res, i, j);
+                    break;
+                // Obter coluna OCUPADO
+                case 5:
+                    p_quarto->ocupado = PQgetvalue(res, i, j);
+                    break;
+                // Obter coluna MODIFICADO_EM
+                case 6:
+                    // Formatar data para aaaa-mm-dd
+                    char data_modificado[27];
+                    strcpy(data_modificado, PQgetvalue(res, i, j));
+                    char data_modificado_formatada[11];
+                    for(int i = 0; i < 10; i++){
+                      data_modificado_formatada[i] = data_modificado[i];
+                    }
+                    data_modificado_formatada[10] = '\0';
+                    strcpy(p_quarto->modificado_em, data_modificado_formatada);
+                    break;
+                // Obter coluna CADASTRADO_EM
+                case 7:
+                    // Formatar data para aaaa-mm-dd
+                    char data_cadastro[27];
+                    strcpy(data_cadastro, PQgetvalue(res, i, j));
+                    char data_cadastro_formatada[11];
+                    for(int i = 0; i < 10; i++){
+                      data_cadastro_formatada[i] = data_cadastro[i];
+                    }
+                    data_cadastro_formatada[10] = '\0';
+                    strcpy(p_quarto->cadastrado_em, data_cadastro_formatada);
+                    break;
+            }
+        }
+    }
+
+    // Finalizar conexão com o banco de dados
+    PQclear(res);
+    PQfinish(conn);
+
+    return 200; // Retornar CÓDIGO 200 sucesso
+}
+
+int ocuparQuarto(int codigo_quarto) {
+ // Obter conexão com o banco de dados
+    PGconn *conn = connection();
+
+    // SQL para ser executado
+    char query[192] = "UPDATE quartos SET ocupado = true WHERE codigo = ";
+
+    // Concatenar codigo_quarto
+    char *s_codigo_quarto = intToCharVetor(codigo_quarto);
+    strcat(query, "'");
+    strcat(query, s_codigo_quarto);
+    strcat(query, "';");
+
+    // Obter resposta do SQL executado
+    PGresult *res = PQexec(conn, query);
+
+    // Obter código de resposta da chamada ao banco
+    ExecStatusType resStatus = PQresultStatus(res);
+
+    // Fazer a captação de possíveis erros
+    if (resStatus != PGRES_TUPLES_OK) {
+      PQclear(res);
+      PQfinish(conn);
+      return 500; // Retornar CÓDIGO 500 para erro de execução
+    }
+
+    // Finalizar conexão com o banco de dados
+    PQclear(res);
+    PQfinish(conn);
+
+    return 200; // Retornar CÓDIGO 200 sucesso
+}
+
+int desocuparQuarto(int codigo_quarto) {
+ // Obter conexão com o banco de dados
+    PGconn *conn = connection();
+
+    // SQL para ser executado
+    char query[192] = "UPDATE quartos SET ocupado = false WHERE codigo = ";
+
+    // Concatenar codigo_quarto
+    char *s_codigo_quarto = intToCharVetor(codigo_quarto);
+    strcat(query, "'");
+    strcat(query, s_codigo_quarto);
+    strcat(query, "';");
+
+    // Obter resposta do SQL executado
+    PGresult *res = PQexec(conn, query);
+
+    // Obter código de resposta da chamada ao banco
+    ExecStatusType resStatus = PQresultStatus(res);
+
+    // Fazer a captação de possíveis erros
+    if (resStatus != PGRES_TUPLES_OK) {
+      PQclear(res);
+      PQfinish(conn);
+      return 500; // Retornar CÓDIGO 500 para erro de execução
     }
 
     // Finalizar conexão com o banco de dados
