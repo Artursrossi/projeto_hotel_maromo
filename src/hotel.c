@@ -14,8 +14,8 @@ p_registro Registro[32]; // variavel que registra o aluguel de um quarto contend
 
 int alugarQuarto() {
   // Declarar variáveis necessárias
+  int codigo_usuario = usuario.codigo;
   int codigo_quarto_escolhido = 1;
-  int codigo_usuario = 1;
   int periodo_dias = 5;
   int numero_ocupantes = 2;
 

@@ -27,7 +27,7 @@ void controlarMenuAdmin() {
   if (strcmp(usuario.cargo, "ADMINISTRADOR") != 0) return;
 
   short int opt = 0; // Variável com a opção escolhida
-  short int res = 0; // Variável com o retorno da função executada
+  short int status = 0; // Variável com o retorno da função executada
 
   do {
     exibirMenuAdmin();
@@ -35,20 +35,20 @@ void controlarMenuAdmin() {
   } while (opt <= 0 || opt > 4);
   switch (opt) {
   case 1:
-    res = listarUsuarios();
-    if (res == 200) {
+    status = listarUsuarios();
+    if (status == 200) {
       controlarMenuAdmin();
     }
     break;
   case 2:
-    res = listarQuartos();
-    if (res == 200) {
+    status = listarQuartos();
+    if (status == 200) {
       controlarMenuAdmin();
     }
     break;
   case 3:
-    res = registrarQuarto();
-    if (res == 200) {
+    status = registrarQuarto();
+    if (status == 200) {
       controlarMenuAdmin();
     }
     break;
@@ -75,7 +75,7 @@ void exibirMenuLogado() {
 
 void controlarMenuLogado() {
   short int opt = 0; // Variável com a opção escolhida
-  short int res = 0; // Variável com o retorno da função executada
+  short int status = 0; // Variável com o retorno da função executada
 
   do {
     exibirMenuLogado();
@@ -84,38 +84,38 @@ void controlarMenuLogado() {
 
   switch (opt) {
   case 1:
-    res = listarQuartos();
-    if (res == 200) {
+    status = listarQuartos();
+    if (status == 200) {
       controlarMenuLogado();
     }
     break;
   case 2:
-    res = alugarQuarto();
-    if (res == 200) {
+    status = alugarQuarto();
+    if (status == 200) {
       controlarMenuLogado();
     }
     break;
   case 3:
-    res = desalugarQuarto();
-    if (res == 200) {
+    status = desalugarQuarto();
+    if (status == 200) {
       controlarMenuLogado();
     }
     break;
   case 4:
-    res = alterarReservaAtual();
-    if (res == 200) {
+    status = alterarReservaAtual();
+    if (status == 200) {
       controlarMenuLogado();
     }
     break;
   case 5:
-    res = gerarHistoricoReservas();
-    if (res == 200) {
+    status = gerarHistoricoReservas();
+    if (status == 200) {
       controlarMenuLogado();
     }
     break;
   case 6:
-    res = deslogarUsuario();
-    if (res == 200) {
+    status = deslogarUsuario();
+    if (status == 200) {
       controlarMenuInicial();
     }
     break;
@@ -136,7 +136,7 @@ void exibirMenuInicial() {
 
 void controlarMenuInicial() {
   short int opt = 0; // Variável com a opção escolhida
-  short int res = 0; // Variável com o retorno da função executada
+  short int status = 0; // Variável com o retorno da função executada
 
   do {
     exibirMenuInicial();
@@ -145,16 +145,21 @@ void controlarMenuInicial() {
 
   switch (opt) {
   case 1:
-    res = autenticarUsuario();
+    status = autenticarUsuario();
+    // Usuário não autenticado
+    if(status == 400){
+      controlarMenuInicial();
+      break;
+    }
     // Assim que o login for efetuado com sucesso, mostrar Menu Logado
-    if (res == 200) {
+    if (status == 200) {
       controlarMenuLogado();
     }
     break;
   case 2:
-    res = registrarUsuario();
+    status = registrarUsuario();
     // Assim que o usuário cadastrar um usuário, mostrar a opção de logar
-    if (res == 200) {
+    if (status == 200) {
       controlarMenuInicial();
     }
     break;

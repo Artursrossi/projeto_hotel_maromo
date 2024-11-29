@@ -8,19 +8,27 @@
 t_usuario usuario;
 
 int registrarUsuario() {
+  // Declaração das variáveis
   char nome[65];
   char email[33];
   char senha[17];
   char compararSenha[17];
   int idade = 0;
+  t_usuario temp_usuario;
 
   limparBufferEntrada();
 
-  printf("Qual o seu nome:");
+  // Validar entrada de nome
+  printf("Digite seu nome:");
   fgets(nome, sizeof(nome), stdin);
 
+  // Validar entrada de email
+  printf("Digite seu email:");
+  fgets(email, sizeof(email), stdin);
+
+  // Validar entrada de idade
   do {
-    printf("Qual a sua idade: ");
+    printf("Digite sua idade: ");
     if (scanf("%d", &idade) != 1) {
       // Entrada inválida, limpa o buffer
       printf("Entrada invalida. Digite um numero inteiro.\n");
@@ -35,9 +43,7 @@ int registrarUsuario() {
 
   limparBufferEntrada();
 
-  printf("Qual o seu email:");
-  fgets(email, sizeof(email), stdin);
-
+  // Validar entrada de senha
   do {
     printf("Digite sua senha: ");
     fgets(compararSenha, sizeof(compararSenha), stdin);
@@ -52,12 +58,19 @@ int registrarUsuario() {
     }
   } while (strcmp(compararSenha, senha) != 0);
 
+  // Verificar se o email já foi utilizado
+  int statusObterUnicoUsuario = obterUnicoUsuario(&temp_usuario, email);
+  if(statusObterUnicoUsuario != 404){
+    printf("Este email já está sendo utilizado\n");
+    return 200;
+  }
+
+  // Cadastrar usuário no banco de dados
   int statusCadastrarUsuario = cadastrarUsuario(nome, email, senha, idade);
 
-  printf("%d", statusCadastrarUsuario);
   // Checar possibilidades de retorno da função
   if (statusCadastrarUsuario != 201) {
-    printf("Ocorreu um erro inesperado. Tente novamente mais tarde...");
+    printf("Ocorreu um erro inesperado. Tente novamente mais tarde...\n");
     return 200;
   }
 
@@ -67,19 +80,44 @@ int registrarUsuario() {
 }
 
 int autenticarUsuario() {
-  char email[33] = "maromo@email.com";
+  // Declaração das variáveis
+  char email[33];
+  char senha[17];
+  t_usuario temp_usuario;
 
-  int statusObterUnicoUsuario = obterUnicoUsuario( &usuario, email);
+  // Validar entrada de email
+  printf("Digite seu email:");
+  limparBufferEntrada();
+  fgets(email, sizeof(email), stdin);
+  strtok(senha, "\n");
+
+  // Validar entrada de senha
+  printf("Digite sua senha:");
+  fgets(senha, sizeof(senha), stdin);
+  strtok(senha, "\n");
+
+  // Obter usuário
+  int statusObterUnicoUsuario = obterUnicoUsuario(&temp_usuario, email);
 
   // Checar possibilidades de retorno da função
   if (statusObterUnicoUsuario == 404) {
-    printf("Usuário não encontrado");
-    return 200;
+    printf("Credenciais inválidas\n");
+    return 400;
   }
   if (statusObterUnicoUsuario != 200) {
-    printf("Ocorreu um erro inesperado. Tente novamente mais tarde...");
+    printf("Ocorreu um erro ao buscar usuário. Tente novamente mais tarde...\n");
     return 200;
   }
+
+  // Verificar se as senhas coincidem
+  if(strcmp(temp_usuario.senha, senha) != 0){
+    printf("Credenciais inválidas\n");
+    return 400;
+  }
+
+  // Atribuir retorno ao usuário global
+  usuario = temp_usuario;
+  printf("Autenticado com sucesso!\n");
 
   return 200;
 }
