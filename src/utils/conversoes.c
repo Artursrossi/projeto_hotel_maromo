@@ -80,3 +80,10 @@ int validacaoSenha(char* senha) {
     
   return 0;
 }
+
+void limparBufferEntrada() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+
+    return;
+}

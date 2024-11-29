@@ -23,4 +23,9 @@ int validacaoEmail(char* array);
 */ 
 int validacaoSenha(char* senha);
 
+/*
+  Função que limpa o buffer do teclado
+*/ 
+void limparBufferEntrada();
+
 #endif
