@@ -69,15 +69,14 @@ int registrarUsuario(){
 int autenticarUsuario(){
   char email[33] = "maromo@email.com";
 
-  int res = 0; // flag para salvar código de retorno da função
-  res = obterUnicoUsuario(&usuario, email);
+  int statusObterUnicoUsuario = obterUnicoUsuario(&usuario, email);
   
   // Checar possibilidades de retorno da função
-  if(res == 404){
+  if(statusObterUnicoUsuario == 404){
     printf("Usuário não encontrado"); 
     return 200;
   }
-  if(res != 200){
+  if(statusObterUnicoUsuario != 200){
     printf("Ocorreu um erro inesperado. Tente novamente mais tarde...");
     return 200;
   }
@@ -90,17 +89,16 @@ int listarUsuarios(){
   t_usuario *usuarios = malloc(sizeof(t_usuario));
   int numero_usuarios;
 
-  int res = 0; // flag para salvar código de retorno da função
-  res = obterMuitosUsuarios(&usuarios, &numero_usuarios);
+  int statusObterMuitosUsuarios = obterMuitosUsuarios(&usuarios, &numero_usuarios);
 
   // Checar possibilidades de retorno da função
-  if(res != 200){
-    printf("Ocorreu um erro inesperado. Tente novamente mais tarde...");
+  if(statusObterMuitosUsuarios != 200){
+    printf("Ocorreu um erro ao listar usuários. Tente novamente mais tarde...");
     return 200;
   }
 
   for (int i = 0; i < numero_usuarios; i++) {
-    printf("Nome: %s, Email: %s, Idade: %d, Cadastrado em: %s \n", usuarios[i].nome, usuarios[i].email, usuarios[i].idade, usuarios[i].cadastrado_em);
+    printf("Código: %d, Nome: %s, Email: %s, Idade: %d, Cargo: %s, Cadastrado em: %s \n", usuarios[i].codigo, usuarios[i].nome, usuarios[i].email, usuarios[i].idade, usuarios[i].cargo, usuarios[i].cadastrado_em);
   }
 
   return 200;
