@@ -346,21 +346,19 @@ int gerarHistoricoReservas(){
 }
 
 int listarQuartos(){
-    printf("1, %s", usuario.nome);
     t_quarto *quartos = malloc(sizeof(t_quarto));
     int numero_quartos;
 
-    int res = 0; // flag para salvar código de retorno da função
-    res = obterMuitosQuartos(&quartos, &numero_quartos);
+    int statusObterMuitosQuartos = obterMuitosQuartos(&quartos, &numero_quartos);
 
     // Checar possibilidades de retorno da função
-    if(res != 200){
+    if(statusObterMuitosQuartos != 200){
         printf("Ocorreu um erro inesperado. Tente novamente mais tarde...");
         return 200;
     }
 
     for (int i = 0; i < numero_quartos; i++) {
-        printf("Codigo: %d, Numero: %d, Tipo: %c, Valor diaria: %.2f, Modificado em: %s, Cadastrado em: %s \n", quartos[i].codigo, quartos[i].numero, quartos[i].tipo, quartos[i].valor_diaria, quartos[i].modificado_em, quartos[i].cadastrado_em);
+        printf("Codigo: %d, Numero: %d, Tipo: %c, Valor diaria: %.2f, Preparado: %s, Ocupado: %s, Modificado em: %s, Cadastrado em: %s \n", quartos[i].codigo, quartos[i].numero, quartos[i].tipo, quartos[i].valor_diaria, quartos[i].preparado ? "sim" : "não", quartos[i].ocupado ? "sim" : "não", quartos[i].modificado_em, quartos[i].cadastrado_em);
     }
 
     return 200;
@@ -371,11 +369,10 @@ int registrarQuarto(){
     char tipo = 'A';
     float valor_diaria = 276.50;
 
-    int res = 0; // flag para salvar código de retorno da função
-    res = cadastrarQuarto(numero, tipo, valor_diaria);
+    int statusCadastrarQuarto = cadastrarQuarto(numero, tipo, valor_diaria);
 
     // Checar possibilidades de retorno da função
-    if(res != 201){
+    if(statusCadastrarQuarto != 201){
         printf("Ocorreu um erro inesperado. Tente novamente mais tarde...");
         return 200;
     }
