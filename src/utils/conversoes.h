@@ -15,17 +15,17 @@ char* floatToCharVetor(double numero);
 
 /*
   Função que valida o cadastro do email é valido! assumindo que tudo que possa estar de erado com um email é a falta de um "@"
-*/ 
-int validacaoEmail(char* array);
+*/
+int validacaoEmail(char *array);
 
 /*
   Função que verifica se a senha cadastrada é valida! uma senha valida deve conter letras e numeros
-*/ 
-int validacaoSenha(char* senha);
+*/
+int validacaoSenha(char *senha);
 
 /*
   Função que limpa o buffer do teclado
-*/ 
+*/
 void limparBufferEntrada();
 
 #endif

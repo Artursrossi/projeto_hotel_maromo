@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+
 #include "usuario.h"
 #include "hotel.h"
 
@@ -11,7 +12,7 @@ void controlarMenuLogado();
 void exibirMenuInicial();
 void controlarMenuInicial();
 
-void exibirMenuAdmin(){
+void exibirMenuAdmin() {
   printf("Escolha uma opção \n");
   printf("1 - Listar todos os usuários \n");
   printf("2 - Exibir todos os quartos \n");
@@ -22,42 +23,42 @@ void exibirMenuAdmin(){
   return;
 }
 
-void controlarMenuAdmin(){
-  if(strcmp(usuario.cargo, "ADMINISTRADOR") != 0) return;
+void controlarMenuAdmin() {
+  if (strcmp(usuario.cargo, "ADMINISTRADOR") != 0) return;
 
-  short int opt = 0;// Variável com a opção escolhida
+  short int opt = 0; // Variável com a opção escolhida
   short int res = 0; // Variável com o retorno da função executada
 
-  do{
+  do {
     exibirMenuAdmin();
-    scanf("%hd", &opt);
-  }while(opt <= 0 || opt > 4);
-  switch(opt){
-    case 1:
-      res = listarUsuarios();
-      if(res == 200){
-        controlarMenuAdmin();
-      }
-      break;
-    case 2:
-      res = listarQuartos();
-      if(res == 200){
-        controlarMenuAdmin();
-      }
-      break;
-    case 3:
-      res = registrarQuarto();
-      if(res == 200){
-        controlarMenuAdmin();
-      }
-      break;
-    case 4:
-      controlarMenuLogado();
-      break;
+    scanf("%hd", & opt);
+  } while (opt <= 0 || opt > 4);
+  switch (opt) {
+  case 1:
+    res = listarUsuarios();
+    if (res == 200) {
+      controlarMenuAdmin();
+    }
+    break;
+  case 2:
+    res = listarQuartos();
+    if (res == 200) {
+      controlarMenuAdmin();
+    }
+    break;
+  case 3:
+    res = registrarQuarto();
+    if (res == 200) {
+      controlarMenuAdmin();
+    }
+    break;
+  case 4:
+    controlarMenuLogado();
+    break;
   }
 }
 
-void exibirMenuLogado(){
+void exibirMenuLogado() {
   printf("Escolha uma opção \n");
   printf("1 - Exibir quartos disponíveis \n");
   printf("2 - Alugar um quarto \n");
@@ -66,65 +67,65 @@ void exibirMenuLogado(){
   printf("5 - Gerar histórico de reservas \n");
   printf("6 - Sair da conta \n");
 
-  if(strcmp(usuario.cargo, "ADMINISTRADOR") == 0) printf("7 - Acessar área administrativa \n");
+  if (strcmp(usuario.cargo, "ADMINISTRADOR") == 0) printf("7 - Acessar área administrativa \n");
   printf("\n");
 
   return;
 }
 
-void controlarMenuLogado(){
-  short int opt = 0;// Variável com a opção escolhida
+void controlarMenuLogado() {
+  short int opt = 0; // Variável com a opção escolhida
   short int res = 0; // Variável com o retorno da função executada
 
-  do{
+  do {
     exibirMenuLogado();
-    scanf("%hd", &opt);
-  }while(opt <= 0 || opt > 7);
+    scanf("%hd", & opt);
+  } while (opt <= 0 || opt > 7);
 
-  switch(opt){
-    case 1:
-      res = listarQuartos();
-      if(res == 200){
-        controlarMenuLogado();
-      }
-      break;
-    case 2:
-      res = alugarQuarto();
-      if(res == 200){
-        controlarMenuLogado();
-      }
-      break;
-    case 3:
-      res = desalugarQuarto();
-      if(res == 200){
-        controlarMenuLogado();
-      }
-      break;
-    case 4:
-      res = alterarReservaAtual();
-      if(res == 200){
-        controlarMenuLogado();
-      }
-      break;
-    case 5:
-      res = gerarHistoricoReservas();
-      if(res == 200){
-        controlarMenuLogado();
-      }
-      break;
-    case 6:
-      res = deslogarUsuario();
-      if(res == 200){
-        controlarMenuInicial();
-      }
-      break;
-    case 7:
-      controlarMenuAdmin();
-      break;
+  switch (opt) {
+  case 1:
+    res = listarQuartos();
+    if (res == 200) {
+      controlarMenuLogado();
+    }
+    break;
+  case 2:
+    res = alugarQuarto();
+    if (res == 200) {
+      controlarMenuLogado();
+    }
+    break;
+  case 3:
+    res = desalugarQuarto();
+    if (res == 200) {
+      controlarMenuLogado();
+    }
+    break;
+  case 4:
+    res = alterarReservaAtual();
+    if (res == 200) {
+      controlarMenuLogado();
+    }
+    break;
+  case 5:
+    res = gerarHistoricoReservas();
+    if (res == 200) {
+      controlarMenuLogado();
+    }
+    break;
+  case 6:
+    res = deslogarUsuario();
+    if (res == 200) {
+      controlarMenuInicial();
+    }
+    break;
+  case 7:
+    controlarMenuAdmin();
+    break;
   }
 }
 
-void exibirMenuInicial(){
+void exibirMenuInicial() {
   printf("Escolha uma opção \n");
   printf("1 - Entrar com uma conta existente  \n");
   printf("2 - Cadastrar nova conta \n");
@@ -133,34 +134,34 @@ void exibirMenuInicial(){
   return;
 }
 
-void controlarMenuInicial(){
+void controlarMenuInicial() {
   short int opt = 0; // Variável com a opção escolhida
   short int res = 0; // Variável com o retorno da função executada
 
-  do{
+  do {
     exibirMenuInicial();
-    scanf("%hd", &opt);
-  }while(opt <= 0 || opt > 2);
+    scanf("%hd", & opt);
+  } while (opt <= 0 || opt > 2);
 
-  switch(opt){
-    case 1:
-      res = autenticarUsuario();
-      // Assim que o login for efetuado com sucesso, mostrar Menu Logado
-      if(res == 200){
-        controlarMenuLogado();
-      }
-      break;
-    case 2:
-      res = registrarUsuario();
-      // Assim que o usuário cadastrar um usuário, mostrar a opção de logar
-      if(res == 200){
-        controlarMenuInicial();
-      }
-      break;
+  switch (opt) {
+  case 1:
+    res = autenticarUsuario();
+    // Assim que o login for efetuado com sucesso, mostrar Menu Logado
+    if (res == 200) {
+      controlarMenuLogado();
+    }
+    break;
+  case 2:
+    res = registrarUsuario();
+    // Assim que o usuário cadastrar um usuário, mostrar a opção de logar
+    if (res == 200) {
+      controlarMenuInicial();
+    }
+    break;
   }
 }
 
-int main(){
+int main() {
   controlarMenuInicial();
 
   return 0;

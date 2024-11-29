@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "psql.h"
 #include "../../external/libpq/libpq-fe.h"
 
-PGconn* connection(){
+PGconn* connection() {
   // Definir credenciais do banco de dados
   char *conninfo = "dbname=lingc user=docker password=Teste123!@# host=localhost port=5432";
 

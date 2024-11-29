@@ -7,92 +7,91 @@
 
 t_usuario usuario;
 
-int registrarUsuario(){
-    char nome[65];
-    char email[33];
-    char senha[17];
-    char compararSenha[17];
-    int idade = 0;
+int registrarUsuario() {
+  char nome[65];
+  char email[33];
+  char senha[17];
+  char compararSenha[17];
+  int idade = 0;
 
-    limparBufferEntrada();
+  limparBufferEntrada();
 
-    printf("Qual o seu nome:");
-    fgets(nome, sizeof(nome), stdin);
+  printf("Qual o seu nome:");
+  fgets(nome, sizeof(nome), stdin);
 
-    do {
-        printf("Qual a sua idade: ");
-        if (scanf("%d", &idade) != 1) {
-            // Entrada inválida, limpa o buffer
-            printf("Entrada invalida. Digite um numero inteiro.\n");
-            while (getchar() != '\n');  // Limpa o buffer de entrada
-        } else if (idade < 0) {
-            // Idade negativa é inválida
-            printf("Idade nao pode ser negativa. Tente novamente.\n");
-        } else {
-            break;  // Entrada válida, sai do loop
-        }
-    } while (1);
-
-    limparBufferEntrada();
-
-    printf("Qual o seu email:");
-    fgets(email, sizeof(email), stdin);
-
-    do {
-        printf("Digite sua senha: ");
-        fgets(compararSenha, sizeof(compararSenha), stdin);
-        compararSenha[strcspn(compararSenha, "\n")] = '\0'; // Remove o '\n'
-
-        printf("Confirme sua senha novamente: ");
-        fgets(senha, sizeof(senha), stdin);
-        senha[strcspn(senha, "\n")] = '\0'; // Remove o '\n'
-
-        if (strcmp(compararSenha, senha) != 0) {
-            printf("As senhas nao estao combinando. Tente novamente.\n");
-        }
-    } while (strcmp(compararSenha, senha) != 0);
-
-    int statusCadastrarUsuario = cadastrarUsuario(nome, email, senha, idade);
-
-    printf("%d", statusCadastrarUsuario);
-    // Checar possibilidades de retorno da função
-    if(statusCadastrarUsuario != 201){
-      printf("Ocorreu um erro inesperado. Tente novamente mais tarde...");
-      return 200;
+  do {
+    printf("Qual a sua idade: ");
+    if (scanf("%d", &idade) != 1) {
+      // Entrada inválida, limpa o buffer
+      printf("Entrada invalida. Digite um numero inteiro.\n");
+      while (getchar() != '\n'); // Limpa o buffer de entrada
+    } else if (idade < 0) {
+      // Idade negativa é inválida
+      printf("Idade nao pode ser negativa. Tente novamente.\n");
+    } else {
+      break; // Entrada válida, sai do loop
     }
+  } while (1);
 
-    printf("Conta cadastrada com sucesso!\n");
+  limparBufferEntrada();
 
-    return 200;
-}
+  printf("Qual o seu email:");
+  fgets(email, sizeof(email), stdin);
 
-int autenticarUsuario(){
-  char email[33] = "maromo@email.com";
+  do {
+    printf("Digite sua senha: ");
+    fgets(compararSenha, sizeof(compararSenha), stdin);
+    compararSenha[strcspn(compararSenha, "\n")] = '\0'; // Remove o '\n'
 
-  int statusObterUnicoUsuario = obterUnicoUsuario(&usuario, email);
-  
+    printf("Confirme sua senha novamente: ");
+    fgets(senha, sizeof(senha), stdin);
+    senha[strcspn(senha, "\n")] = '\0'; // Remove o '\n'
+
+    if (strcmp(compararSenha, senha) != 0) {
+      printf("As senhas nao estao combinando. Tente novamente.\n");
+    }
+  } while (strcmp(compararSenha, senha) != 0);
+
+  int statusCadastrarUsuario = cadastrarUsuario(nome, email, senha, idade);
+
+  printf("%d", statusCadastrarUsuario);
   // Checar possibilidades de retorno da função
-  if(statusObterUnicoUsuario == 404){
-    printf("Usuário não encontrado"); 
-    return 200;
-  }
-  if(statusObterUnicoUsuario != 200){
+  if (statusCadastrarUsuario != 201) {
     printf("Ocorreu um erro inesperado. Tente novamente mais tarde...");
     return 200;
   }
 
+  printf("Conta cadastrada com sucesso!\n");
 
   return 200;
 }
 
-int listarUsuarios(){
-  t_usuario *usuarios = malloc(sizeof(t_usuario));
-  int numero_usuarios;
+int autenticarUsuario() {
+  char email[33] = "maromo@email.com";
 
-  int statusObterMuitosUsuarios = obterMuitosUsuarios(&usuarios, &numero_usuarios);
+  int statusObterUnicoUsuario = obterUnicoUsuario( &usuario, email);
 
   // Checar possibilidades de retorno da função
-  if(statusObterMuitosUsuarios != 200){
+  if (statusObterUnicoUsuario == 404) {
+    printf("Usuário não encontrado");
+    return 200;
+  }
+  if (statusObterUnicoUsuario != 200) {
+    printf("Ocorreu um erro inesperado. Tente novamente mais tarde...");
+    return 200;
+  }
+
+  return 200;
+}
+
+int listarUsuarios() {
+  t_usuario * usuarios = malloc(sizeof(t_usuario));
+  int numero_usuarios;
+
+  int statusObterMuitosUsuarios = obterMuitosUsuarios( &usuarios, &numero_usuarios);
+
+  // Checar possibilidades de retorno da função
+  if (statusObterMuitosUsuarios != 200) {
     printf("Ocorreu um erro ao listar usuários. Tente novamente mais tarde...");
     return 200;
   }

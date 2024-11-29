@@ -4,30 +4,32 @@
 #include <stdbool.h>
 
 //simula um quarto e suas caracteristicas de interesse gerencial
-typedef struct Quarto{
-    int codigo;
-    int numero;
-    char tipo;
-    float valor_diaria;
-    bool preparado;
-    bool ocupado;
-    char modificado_em[11];
-    char cadastrado_em[11];
-} t_quarto;
+typedef struct Quarto {
+  int codigo;
+  int numero;
+  char tipo;
+  float valor_diaria;
+  bool preparado;
+  bool ocupado;
+  char modificado_em[11];
+  char cadastrado_em[11];
+}
+t_quarto;
 
-typedef struct RegistroAluguel{
-    int codigo;
-    int quarto_escolhido;
-    int usuario_relacionado;
-    int periodo_dias;
-    float valor_total;
-    int numero_ocupantes;
-    char alugado_em[11];
-} t_registro_aluguel;
+typedef struct RegistroAluguel {
+  int codigo;
+  int quarto_escolhido;
+  int usuario_relacionado;
+  int periodo_dias;
+  float valor_total;
+  int numero_ocupantes;
+  char alugado_em[11];
+}
+t_registro_aluguel;
 
 /*
   Esta funcao permite que o usuario alugue um quarto
-*/ 
+*/
 int alugarQuarto();
 
 /*
@@ -38,7 +40,7 @@ int desalugarQuarto();
 /*
   Atualiza informações do quarto
 */
-int alterarReservaAtual(); 
+int alterarReservaAtual();
 
 /**
   Lidar com Registro de Quartos
