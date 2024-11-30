@@ -51,6 +51,11 @@ int gerarHistoricoReservas();
 int listarQuartos();
 
 /**
+  Listar apenas os quartos desocupados
+ */
+int listarQuartosDesocupados();
+
+/**
   Lidar com Registro de Quartos
  */
 int registrarQuarto();

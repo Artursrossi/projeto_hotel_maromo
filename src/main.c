@@ -82,7 +82,7 @@ void controlarMenuLogado() {
 
   switch (opt) {
   case 1:
-    status = listarQuartos();
+    status = listarQuartosDesocupados();
     if (status == 200) {
       controlarMenuLogado();
     }
