@@ -32,7 +32,7 @@ void controlarMenuAdmin() {
   do {
     exibirMenuAdmin();
     scanf("%hd", & opt);
-  } while (opt <= 0 || opt > 4);
+  } while (opt <= 0 || opt > 5);
   switch (opt) {
   case 1:
     status = listarUsuarios();

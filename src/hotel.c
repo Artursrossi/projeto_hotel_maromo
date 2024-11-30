@@ -409,9 +409,55 @@ int listarQuartosDesocupados() {
 }
 
 int registrarQuarto() {
-  int numero = 111;
-  char tipo = 'A';
-  float valor_diaria = 276.50;
+  // Declaração das variáveis
+  int numero;
+  char tipo;
+  float valor_diaria;
+
+  // Validar entrada de número
+  do {
+    printf("Digite o número do quarto: ");
+    int isNumber = scanf("%d", &numero);
+
+    // Deve ser um número
+    if (isNumber != 1) {
+      printf("Digite um numero inteiro. \n");
+      continue;
+    }
+
+    // Número do quarto menor ou igual a zero
+    if (numero <= 0) {
+      printf("Número inválido. \n");
+      continue;
+    }
+
+    break; // Entrada válida, sai do loop
+  } while (1);
+
+  // Validar entrada de tipo
+  do {
+    printf("Digite o tipo do quarto (A, B, C, D, E): ");
+    scanf(" %c", &tipo);
+
+    // Tipo válido
+    if (tipo == 'A' || tipo == 'B' || tipo == 'C' || tipo == 'D' || tipo == 'E') {
+      break; // Entrada válida, sai do loop
+    }
+  } while (1);
+
+  // Validar entrada de valor_diaria
+  do {
+    printf("Digite o valor da diária do quarto: ");
+    scanf("%f", &valor_diaria);
+
+    // Número do quarto menor ou igual a zero
+    if (valor_diaria <= 0) {
+      printf("Valor inválido. \n");
+      continue;
+    }
+
+    break; // Entrada válida, sai do loop
+  } while (1);
 
   int statusCadastrarQuarto = cadastrarQuarto(numero, tipo, valor_diaria);
 
@@ -421,7 +467,7 @@ int registrarQuarto() {
     return 200;
   }
 
-  printf("Quarto cadastrado com sucesso!");
+  printf("Quarto cadastrado com sucesso! \n");
 
   return 200;
 }
