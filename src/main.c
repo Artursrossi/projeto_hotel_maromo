@@ -15,9 +15,10 @@ void controlarMenuInicial();
 void exibirMenuAdmin() {
   printf("Escolha uma opção \n");
   printf("1 - Listar todos os usuários \n");
-  printf("2 - Exibir todos os quartos \n");
-  printf("3 - Cadastrar novos quartos \n");
-  printf("4 - Voltar ao menu anterior \n");
+  printf("2 - Listar todos os quartos \n");
+  printf("3 - Listar todos os registros de alugueis \n");
+  printf("4 - Cadastrar novos quartos \n");
+  printf("5 - Voltar ao menu anterior \n");
 
   return;
 }
@@ -46,12 +47,18 @@ void controlarMenuAdmin() {
     }
     break;
   case 3:
-    status = registrarQuarto();
+    status = listarRegistrosAlugueis();
     if (status == 200) {
       controlarMenuAdmin();
     }
     break;
   case 4:
+    status = registrarQuarto();
+    if (status == 200) {
+      controlarMenuAdmin();
+    }
+    break;
+  case 5:
     controlarMenuLogado();
     break;
   }
