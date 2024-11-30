@@ -183,8 +183,12 @@ int obterMuitosRegistroAluguel(t_registro_aluguel **p_registro_aluguel, int *num
         sscanf(PQgetvalue(res, i, j), "%d", &numero_ocupantes); // Transformar string em inteiro
         (*p_registro_aluguel)[i].numero_ocupantes = numero_ocupantes;
         break;
-        // Obter coluna CADASTRADO_EM
+        // Obter coluna ALUGUEL_EM_ANDAMENTO
       case 6:
+          bool aluguel_em_andamento = PQgetvalue(res, i, j)[0] == 't' ? true : false;
+         (*p_registro_aluguel)[i].aluguel_em_andamento = aluguel_em_andamento;
+        // Obter coluna CADASTRADO_EM
+      case 7:
         // Formatar data para aaaa-mm-dd
         char data_cadastro[27];
         strcpy(data_cadastro, PQgetvalue(res, i, j));
@@ -287,8 +291,120 @@ int obterMuitosRegistroAluguelPorCodigoUsuario(t_registro_aluguel **p_registro_a
         sscanf(PQgetvalue(res, i, j), "%d", &numero_ocupantes); // Transformar string em inteiro
         (*p_registro_aluguel)[i].numero_ocupantes = numero_ocupantes;
         break;
-        // Obter coluna CADASTRADO_EM
+        // Obter coluna ALUGUEL_EM_ANDAMENTO
       case 6:
+          bool aluguel_em_andamento = PQgetvalue(res, i, j)[0] == 't' ? true : false;
+         (*p_registro_aluguel)[i].aluguel_em_andamento = aluguel_em_andamento;
+        // Obter coluna CADASTRADO_EM
+      case 7:
+        // Formatar data para aaaa-mm-dd
+        char data_cadastro[27];
+        strcpy(data_cadastro, PQgetvalue(res, i, j));
+        char data_alugado_em[11];
+        for (int i = 0; i < 10; i++) {
+          data_alugado_em[i] = data_cadastro[i];
+        }
+        data_alugado_em[10] = '\0';
+        strcpy((*p_registro_aluguel)[i].alugado_em, data_alugado_em);
+        break;
+      }
+    }
+  }
+
+  // Finalizar conexão com o banco de dados
+  PQclear(res);
+  PQfinish(conn);
+
+  return 200; // Retornar CÓDIGO 200 sucesso
+}
+
+int obterMuitosRegistroAluguelPorCodigoUsuarioEmAndamento(t_registro_aluguel **p_registro_aluguel, int *numero_registro_aluguel, int codigo_usuario) {
+  // Obter conexão com o banco de dados
+  PGconn *conn = connection();
+
+  // SQL para ser executado
+  char query[192] = "SELECT * FROM registro_alugueis WHERE aluguel_em_andamento = true AND usuario_relacionado = ";
+
+  // Concatenar codigo_usuario
+  char *s_codigo_usuario = intToCharVetor(codigo_usuario);
+  strcat(query, s_codigo_usuario);
+  strcat(query, ";");
+
+  // Obter resposta do SQL executado
+  PGresult *res = PQexec(conn, query);
+
+  // Obter código de resposta da chamada ao banco
+  ExecStatusType resStatus = PQresultStatus(res);
+
+  // Fazer a captação de possíveis erros
+  if (resStatus != PGRES_TUPLES_OK) {
+    PQclear(res);
+    PQfinish(conn);
+    return 500; // Retornar CÓDIGO 500 erro de execução
+  }
+
+  // Obter número de linhas e colunas
+  int rows = PQntuples(res);
+  int cols = PQnfields(res);
+
+  // Escrever número de quartos no banco de dados no ponteiro recebido
+  *numero_registro_aluguel = rows;
+
+  // Percorrer cada linha do banco
+  for (int i = 0; i < rows; i++) {
+    int novo_tamanho = i + 2; // Próximo tamanho do vetor
+    *p_registro_aluguel = realloc(*p_registro_aluguel, novo_tamanho * sizeof(t_registro_aluguel));
+    /* Verificar se o realloc foi executado com sucesso*/
+    if (*p_registro_aluguel == NULL) {
+      printf("Erro ao alocar memória para p_registro_aluguel");
+      return 500; // Retornar CÓDIGO 500 erro na execução
+    }
+
+    // Percorrer cada coluna da linha
+    for (int j = 0; j < cols; j++) {
+      switch (j) {
+        //Obter coluna CODIGO
+      case 0:
+        int codigo = 0;
+        sscanf(PQgetvalue(res, i, j), "%d", &codigo); // Transformar string em inteiro
+        (*p_registro_aluguel)[i].codigo = codigo;
+        break;
+        // Obter coluna QUARTO_ESCOLHIDO
+      case 1:
+        int quarto_escolhido = 0;
+        sscanf(PQgetvalue(res, i, j), "%d", &quarto_escolhido); // Transformar string em inteiro
+        (*p_registro_aluguel)[i].quarto_escolhido = quarto_escolhido;
+        break;
+        // Obter coluna USUARIO_RELACIONADO
+      case 2:
+        int usuario_relacionado = 0;
+        sscanf(PQgetvalue(res, i, j), "%d", &usuario_relacionado); // Transformar string em inteiro
+        (*p_registro_aluguel)[i].usuario_relacionado = usuario_relacionado;
+        break;
+        // Obter coluna PERIODO_DIAS
+      case 3:
+        int periodo_dias = 0;
+        sscanf(PQgetvalue(res, i, j), "%d", &periodo_dias); // Transformar string em inteiro
+        (*p_registro_aluguel)[i].periodo_dias = periodo_dias;
+        break;
+        // Obter coluna VALOR_TOTAL
+      case 4:
+        float valor_total = 0.0;
+        sscanf(PQgetvalue(res, i, j), "%f", &valor_total); // Transformar string em inteiro
+        (*p_registro_aluguel)[i].valor_total = valor_total;
+        break;
+        // Obter coluna NUMERO_OCUPANTES
+      case 5:
+        int numero_ocupantes = 0;
+        sscanf(PQgetvalue(res, i, j), "%d", &numero_ocupantes); // Transformar string em inteiro
+        (*p_registro_aluguel)[i].numero_ocupantes = numero_ocupantes;
+        break;
+        // Obter coluna ALUGUEL_EM_ANDAMENTO
+      case 6:
+          bool aluguel_em_andamento = PQgetvalue(res, i, j)[0] == 't' ? true : false;
+         (*p_registro_aluguel)[i].aluguel_em_andamento = aluguel_em_andamento;
+        // Obter coluna CADASTRADO_EM
+      case 7:
         // Formatar data para aaaa-mm-dd
         char data_cadastro[27];
         strcpy(data_cadastro, PQgetvalue(res, i, j));
@@ -524,17 +640,17 @@ int obterMuitosQuartosDesocupados(t_quarto **p_quartos, int *numero_quartos) {
   return 200; // Retornar CÓDIGO 200 sucesso
 }
 
-int obterUnicoQuartoPorCodigo(t_quarto *p_quarto, int codigo_quarto) {
+int obterUnicoQuartoPorNumero(t_quarto *p_quarto, int numero_quarto) {
   // Obter conexão com o banco de dados
   PGconn *conn = connection();
 
   // SQL para ser executado
-  char query[192] = "SELECT * FROM quartos WHERE codigo = ";
+  char query[192] = "SELECT * FROM quartos WHERE numero = ";
 
   // Concatenar codigo_quarto
-  char *s_codigo_quarto = intToCharVetor(codigo_quarto);
+  char *s_numero_quarto = intToCharVetor(numero_quarto);
   strcat(query, "'");
-  strcat(query, s_codigo_quarto);
+  strcat(query, s_numero_quarto);
   strcat(query, "';");
 
   // Obter resposta do SQL executado
@@ -670,6 +786,39 @@ int desocuparQuarto(int codigo_quarto) {
   char *s_codigo_quarto = intToCharVetor(codigo_quarto);
   strcat(query, "'");
   strcat(query, s_codigo_quarto);
+  strcat(query, "';");
+
+  // Obter resposta do SQL executado
+  PGresult *res = PQexec(conn, query);
+
+  // Obter código de resposta da chamada ao banco
+  ExecStatusType resStatus = PQresultStatus(res);
+
+  // Fazer a captação de possíveis erros
+  if (resStatus != PGRES_COMMAND_OK) {
+    PQclear(res);
+    PQfinish(conn);
+    return 500; // Retornar CÓDIGO 500 para erro de execução
+  }
+
+  // Finalizar conexão com o banco de dados
+  PQclear(res);
+  PQfinish(conn);
+
+  return 200; // Retornar CÓDIGO 200 sucesso
+}
+
+int finalizarReserva(int codigo_registro_aluguel) {
+  // Obter conexão com o banco de dados
+  PGconn *conn = connection();
+
+  // SQL para ser executado
+  char query[192] = "UPDATE registro_alugueis SET aluguel_em_andamento = false WHERE codigo = ";
+
+  // Concatenar codigo_quarto
+  char *s_codigo_registro_aluguel = intToCharVetor(codigo_registro_aluguel);
+  strcat(query, "'");
+  strcat(query, s_codigo_registro_aluguel);
   strcat(query, "';");
 
   // Obter resposta do SQL executado

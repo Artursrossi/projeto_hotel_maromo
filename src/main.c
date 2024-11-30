@@ -96,12 +96,13 @@ void exibirMenuLogado() {
   printf("Escolha uma opção \n");
   printf("1 - Exibir quartos disponíveis \n");
   printf("2 - Alugar um quarto \n");
-  printf("3 - Fazer CheckOut do quarto \n");
-  printf("4 - Alterar informações da reserva atual \n");
-  printf("5 - Gerar histórico de reservas \n");
-  printf("6 - Sair da conta \n");
+  printf("3 - Listar reservas atuais \n");
+  printf("4 - Desalugar quarto \n");
+  printf("5 - Alterar informações da reserva atual \n");
+  printf("6 - Gerar histórico de reservas \n");
+  printf("7 - Sair da conta \n");
 
-  if (strcmp(usuario.cargo, "ADMINISTRADOR") == 0) printf("7 - Acessar área administrativa \n");
+  if (strcmp(usuario.cargo, "ADMINISTRADOR") == 0) printf("8 - Acessar área administrativa \n");
 
   return;
 }
@@ -131,8 +132,8 @@ void controlarMenuLogado() {
     }
 
     // Validar intervalo de opções
-    if(opt < 1 || opt > 7){
-      printf("Você deve escolher de 1 a 7 \n");
+    if(opt < 1 || opt > 8){
+      printf("Você deve escolher de 1 a 8 \n");
       continue;
     }
 
@@ -153,30 +154,36 @@ void controlarMenuLogado() {
       }
       break;
     case 3:
-      status = desalugarQuarto();
+      status = listarReservaAtual();
       if (status == 200) {
         controlarMenuLogado();
       }
       break;
     case 4:
-      status = alterarReservaAtual();
+      status = desalugarQuarto();
       if (status == 200) {
         controlarMenuLogado();
       }
       break;
     case 5:
-      status = gerarHistoricoReservas();
+      status = alterarReservaAtual();
       if (status == 200) {
         controlarMenuLogado();
       }
       break;
     case 6:
+      status = listarHistoricoReservas();
+      if (status == 200) {
+        controlarMenuLogado();
+      }
+      break;
+    case 7:
       status = deslogarUsuario();
       if (status == 200) {
         controlarMenuInicial();
       }
       break;
-    case 7:
+    case 8:
       controlarMenuAdmin();
       break;
     default:
