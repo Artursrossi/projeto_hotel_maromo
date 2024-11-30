@@ -197,88 +197,68 @@ int desalugarQuarto() {
 }
 
 int alterarReservaAtual() {
-  char tipo = '0';
-  int numero = 0;
-  int novo_numero_quarto;
-  int option = 0;
-  int novo_numero_ocupantes = 0;
+  // Declarar variáveis necessárias
+  int codigo_usuario = usuario.codigo;
+  int numero_quarto_escolhido;
+  int novo_numero_ocupantes;
+  t_registro_aluguel *registro_aluguel = malloc(sizeof(t_registro_aluguel));
+  int numero_registro_aluguel;
 
-  printf("por favor informe o numero do quarto alugado\n");
-  while (numero == 0) {
-    scanf("%d", &numero);
+  printf("Informe o numero do quarto alugado\n");
+  scanf("%d", &numero_quarto_escolhido);
 
-    if (numero < 1 || numero > 32) {
-      printf("por favor informe um quarto valido\n");
-      numero = 0;
-    }
+  printf("Informe o novo número de hospedes\n");
+  scanf("%d", &novo_numero_ocupantes);
+
+  // Obter informações relacionadas ao quarto escolhido
+  t_quarto quarto;
+  int statusObterUnicoQuartoPorNumero = obterUnicoQuartoPorNumero(&quarto, numero_quarto_escolhido);
+
+  // Checar possibilidades de retorno da função
+  if (statusObterUnicoQuartoPorNumero == 404) {
+    printf("Quarto não encontrado \n");
+    return 200;
   }
-  printf("por favor informe o que deseja alterar\n");
-  printf("1 - quarto alugado\n");
-  printf("2 - numero de hospedes\n");
-  printf("3 - cancelar\n");
-
-  while (numero == 0) {
-    switch (numero) { // altera o quarto alugado
-    case 1: {
-      // verificao para checar se o novo quarto alugado sera do mesmo tipo e esta disponivel
-      tipo = Hotel[numero]->tipo;
-      while (novo_numero_quarto == 0) {
-        printf("por favor informe qual quarto voce gostaria de alugar!\n");
-        scanf("%d", &novo_numero_quarto);
-
-        if (Hotel[novo_numero_quarto]->ocupado == true) {
-          printf("o quarto escolhido esta alugado por favor escolha outro!\n");
-          novo_numero_quarto = 0;
-        }
-
-        if (Hotel[novo_numero_quarto]->tipo != tipo) {
-          printf("o quarto escolhido nao e do mesmo tipo que o seu atual por favor escolha outro!\n");
-          novo_numero_quarto = 0;
-        }
-      }
-
-      //migrando as informacoes de um quarto para outro
-      // disponibilidade
-      Hotel[novo_numero_quarto]->ocupado = true;
-      Hotel[numero]->ocupado = false;
-
-      //valor do aluguel
-      Registro[novo_numero_quarto]->valor_total = Registro[numero]->valor_total;
-      Registro[numero]->valor_total = 0;
-
-      //numero de ocupantes
-      Registro[novo_numero_quarto]->numero_ocupantes = Registro[numero]->numero_ocupantes;
-      Registro[numero]->numero_ocupantes = 0;
-
-      printf("a alterecao de quartos foi realizada com sucesso!\n");
-      break;
-    }
-    case 2: {
-      //alteracao do numero de ocupantes
-      while (novo_numero_ocupantes == 0) {
-        printf("por favor informe qual quarto voce gostaria de alugar!\n");
-        scanf("%d", &novo_numero_ocupantes);
-
-        if (novo_numero_ocupantes > 4 || novo_numero_ocupantes < 1) {
-          printf("o valor digitado e invalido por favor digite outro! (min - 1 max - 4)");
-          novo_numero_ocupantes = 0;
-        }
-      }
-      Registro[novo_numero_quarto]->numero_ocupantes = novo_numero_ocupantes;
-      printf("o numero de hospedes foi alterado com sucesso para %d!\n", novo_numero_ocupantes);
-      break;
-    }
-
-    case 3: {
-      printf("A alteracao de aluguel foi cancelada!\n");
-      break;
-    }
-    default: {
-      printf("por favor informe uma opcao valida");
-      break;
-    }
-    }
+  if (statusObterUnicoQuartoPorNumero != 200) {
+    printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
+    return 200;
   }
+
+  int statusObterMuitosRegistroAluguelPorCodigoUsuarioEmAndamento = obterMuitosRegistroAluguelPorCodigoUsuarioEmAndamento(&registro_aluguel, &numero_registro_aluguel, codigo_usuario);
+
+  // Checar possibilidades de retorno da função
+  if (statusObterMuitosRegistroAluguelPorCodigoUsuarioEmAndamento != 200) {
+    printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
+    return 200;
+  }
+
+  // Mensagem caso não tenha aluguéis
+  if(numero_registro_aluguel == 0){
+    printf("Você não tem nenhuma reserva em aberto. \n");
+    return 200;
+  }
+
+  int codigo_reserva_escolhida = 0;
+  for (int i = 0; i < numero_registro_aluguel; i++) {
+    if(registro_aluguel[i].quarto_escolhido == numero_quarto_escolhido && registro_aluguel[i].usuario_relacionado == usuario.codigo && registro_aluguel[i].aluguel_em_andamento == true) codigo_reserva_escolhida = registro_aluguel[i].codigo;
+  }
+
+  // Verificar se a reserva desse quarto está no nome do usuário que está desalugando o quarto
+  if(codigo_reserva_escolhida == 0){
+    printf("Você não está alugando o quarto de número %d no momento. \n", numero_quarto_escolhido);
+    return 200;
+  }
+
+  // Alterar novo número de hospedes
+  int statusFinalizarReserva = atualizarReservaNumeroOcupantes(codigo_reserva_escolhida, novo_numero_ocupantes);
+
+  // Checar possibilidades de retorno da função
+  if (statusFinalizarReserva != 200) {
+    printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
+    return 200;
+  }
+
+  printf("o numero de hospedes foi alterado com sucesso para %d!\n", novo_numero_ocupantes);
 
   return 200;
 }
