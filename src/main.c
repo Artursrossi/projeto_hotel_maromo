@@ -99,7 +99,7 @@ void exibirMenuLogado() {
   printf("3 - Listar reservas atuais \n");
   printf("4 - Desalugar quarto \n");
   printf("5 - Alterar informações da reserva atual \n");
-  printf("6 - Gerar histórico de reservas \n");
+  printf("6 - Listar histórico de reservas \n");
   printf("7 - Sair da conta \n");
 
   if (strcmp(usuario.cargo, "ADMINISTRADOR") == 0) printf("8 - Acessar área administrativa \n");

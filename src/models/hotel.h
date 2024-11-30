@@ -39,6 +39,11 @@ int obterMuitosQuartosDesocupados(t_quarto **p_quartos, int *numero_quartos);
 /*
   Obter único quartos por id
  */
+int obterUnicoQuartoPorCodigo(t_quarto *p_quarto, int codigo_quarto);
+
+/*
+  Obter único quartos por id
+ */
 int obterUnicoQuartoPorNumero(t_quarto *p_quarto, int numero_quarto);
 
 /*
