@@ -9,8 +9,7 @@ typedef struct Usuario {
   int idade;
   char cargo[14];
   char cadastrado_em[11];
-}
-t_usuario;
+} t_usuario;
 
 extern t_usuario usuario;
 

@@ -1,6 +1,7 @@
 #include <stdio.h>
-
 #include <stdlib.h>
+#include <stdbool.h>
+#include <ctype.h>
 
 char* intToCharVetor(int numero) {
   // Determina o tamanho necessário para armazenar o número como string, incluindo espaço para o sinal e o caractere nulo ('\0')
@@ -36,44 +37,39 @@ char* floatToCharVetor(double numero) {
   return str;
 }
 
-int validacaoEmail(char *array) {
-  // loop que percorre o array inteiro parando quando encontrar o terminador como i ja é zero nao deixamos o inicio vazio
-  for (int i = 0; array[i] != '\0'; i++) {
-    if (array[i] == '@') return 1;
+bool validarEmail(char *str) {
+  // loop que percorre o str inteiro parando quando encontrar o terminador como i ja é zero nao deixamos o inicio vazio
+  for (int i = 0; str[i] != '\0'; i++) {
+    if (str[i] == '@') return true;
   }
 
-  return 0;
+  return false;
 }
 
-int validacaoSenha(char *senha) {
-  int chars[127] = {
-    0
-  }; // array contendo uma posição que corresponde pra o valor de cada um dos characteres ASCII até 127!
-  int loop_counter = 0;
-  int integer_counter = 0;
-  int char_counter = 0;
-  int check_char = 0;
+bool validarSenha(char *str) {
+  bool temNumero = false;
+  bool temLetra = false;
 
-  for (; senha[loop_counter] != '\0'; loop_counter++) {
-    chars[senha[loop_counter]]++;
-  }
-
-  for (check_char = 0; check_char < 127; check_char++) {
-    if (check_char >= 47 && check_char <= 56) {
-      chars[check_char] != 0 && integer_counter++;
+  // Itera pela string até o final
+  for (int i = 0; str[i] != '\0'; i++) {
+    // Verifica se é um número
+    if (isdigit(str[i])) {
+      temNumero = true;
     }
 
-    if (check_char < 47 || check_char > 56) {
-      chars[check_char] != 0 && char_counter++;
+    // Verifica se é uma letra
+    if (isalpha(str[i])) {
+      temLetra = true;
     }
 
+    // Se já tiver ambos, pode encerrar o loop
+    if (temNumero && temLetra) {
+      return true;
+    }
   }
 
-  if (integer_counter && char_counter != 0) {
-    return 1;
-  }
-
-  return 0;
+  // Retorna true apenas se tiver pelo menos um número e uma letra
+  return false;
 }
 
 void limparBufferEntrada() {

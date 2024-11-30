@@ -13,8 +13,7 @@ typedef struct Quarto {
   bool ocupado;
   char modificado_em[11];
   char cadastrado_em[11];
-}
-t_quarto;
+} t_quarto;
 
 typedef struct RegistroAluguel {
   int codigo;
@@ -24,8 +23,7 @@ typedef struct RegistroAluguel {
   float valor_total;
   int numero_ocupantes;
   char alugado_em[11];
-}
-t_registro_aluguel;
+} t_registro_aluguel;
 
 /*
   Esta funcao permite que o usuario alugue um quarto
