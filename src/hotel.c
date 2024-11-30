@@ -306,19 +306,59 @@ int alterarReservaAtual() {
   return 200;
 }
 
+int listarRegistrosAlugueis() {
+  t_registro_aluguel *registro_aluguel = malloc(sizeof(t_registro_aluguel));
+  int numero_registro_aluguel;
+
+  int statusObterMuitosRegistroAluguel = obterMuitosRegistroAluguel(&registro_aluguel, &numero_registro_aluguel);
+
+  // Checar possibilidades de retorno da função
+  if (statusObterMuitosRegistroAluguel != 200) {
+    printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
+    return 200;
+  }
+
+  // Mensagem caso não tenha aluguéis
+  if(numero_registro_aluguel == 0){
+    printf("Você ainda não efetuou nenhum aluguel. \n");
+    return 200;
+  }
+
+  for (int i = 0; i < numero_registro_aluguel; i++) {
+    printf("Codigo: %d, Quarto escolhido: %d, Usuário relacionado: %d, Período dias: %d, Valor total: %.2f, Número ocupantes: %d, Alugado em: %s \n", registro_aluguel[i].codigo, registro_aluguel[i].quarto_escolhido, registro_aluguel[i].usuario_relacionado, registro_aluguel[i].periodo_dias, registro_aluguel[i].valor_total, registro_aluguel[i].numero_ocupantes, registro_aluguel[i].alugado_em);
+  }
+
+  // Libera a memória alocada
+  free(registro_aluguel);
+
+  return 200;
+}
+
 int gerarHistoricoReservas() {
-  int quarto_numero;
-  printf("digite o numero do quarto");
-  scanf("%d", &quarto_numero);
+  int codigo_usuario = usuario.codigo;
+  t_registro_aluguel *registro_aluguel = malloc(sizeof(t_registro_aluguel));
+  int numero_registro_aluguel;
 
-  int numero_quarto = Hotel[quarto_numero]->numero;
-  int preco = Registro[quarto_numero]->valor_total;
-  int ocupantes = Registro[quarto_numero]->numero_ocupantes;
+  int statusObterMuitosRegistroAluguelPorCodigoUsuario = obterMuitosRegistroAluguelPorCodigoUsuario(&registro_aluguel, &numero_registro_aluguel, codigo_usuario);
 
-  printf("-- Recibo para quarto alugado--");
-  printf("-- Numero do quarto->%d --", numero_quarto);
-  printf("-- Preco para o aluguel %d --", preco);
-  printf("-- numero de ocupantes %d", ocupantes);
+  // Checar possibilidades de retorno da função
+  if (statusObterMuitosRegistroAluguelPorCodigoUsuario != 200) {
+    printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
+    return 200;
+  }
+
+  // Mensagem caso não tenha aluguéis
+  if(numero_registro_aluguel == 0){
+    printf("Você ainda não efetuou nenhum aluguel. \n");
+    return 200;
+  }
+
+  for (int i = 0; i < numero_registro_aluguel; i++) {
+    printf("Codigo: %d, Quarto escolhido: %d, Usuário relacionado: %d, Período dias: %d, Valor total: %.2f, Número ocupantes: %d, Alugado em: %s \n", registro_aluguel[i].codigo, registro_aluguel[i].quarto_escolhido, registro_aluguel[i].usuario_relacionado, registro_aluguel[i].periodo_dias, registro_aluguel[i].valor_total, registro_aluguel[i].numero_ocupantes, registro_aluguel[i].alugado_em);
+  }
+
+  // Libera a memória alocada
+  free(registro_aluguel);
 
   return 200;
 }
@@ -327,7 +367,7 @@ int listarQuartos() {
   t_quarto *quartos = malloc(sizeof(t_quarto));
   int numero_quartos;
 
-  int statusObterMuitosQuartos = obterMuitosQuartos( &quartos, &numero_quartos);
+  int statusObterMuitosQuartos = obterMuitosQuartos(&quartos, &numero_quartos);
 
   // Checar possibilidades de retorno da função
   if (statusObterMuitosQuartos != 200) {
@@ -369,9 +409,55 @@ int listarQuartosDesocupados() {
 }
 
 int registrarQuarto() {
-  int numero = 111;
-  char tipo = 'A';
-  float valor_diaria = 276.50;
+  // Declaração das variáveis
+  int numero;
+  char tipo;
+  float valor_diaria;
+
+  // Validar entrada de número
+  do {
+    printf("Digite o número do quarto: ");
+    int isNumber = scanf("%d", &numero);
+
+    // Deve ser um número
+    if (isNumber != 1) {
+      printf("Digite um numero inteiro. \n");
+      continue;
+    }
+
+    // Número do quarto menor ou igual a zero
+    if (numero <= 0) {
+      printf("Número inválido. \n");
+      continue;
+    }
+
+    break; // Entrada válida, sai do loop
+  } while (1);
+
+  // Validar entrada de tipo
+  do {
+    printf("Digite o tipo do quarto (A, B, C, D, E): ");
+    scanf(" %c", &tipo);
+
+    // Tipo válido
+    if (tipo == 'A' || tipo == 'B' || tipo == 'C' || tipo == 'D' || tipo == 'E') {
+      break; // Entrada válida, sai do loop
+    }
+  } while (1);
+
+  // Validar entrada de valor_diaria
+  do {
+    printf("Digite o valor da diária do quarto: ");
+    scanf("%f", &valor_diaria);
+
+    // Número do quarto menor ou igual a zero
+    if (valor_diaria <= 0) {
+      printf("Valor inválido. \n");
+      continue;
+    }
+
+    break; // Entrada válida, sai do loop
+  } while (1);
 
   int statusCadastrarQuarto = cadastrarQuarto(numero, tipo, valor_diaria);
 
@@ -381,7 +467,7 @@ int registrarQuarto() {
     return 200;
   }
 
-  printf("Quarto cadastrado com sucesso!");
+  printf("Quarto cadastrado com sucesso! \n");
 
   return 200;
 }

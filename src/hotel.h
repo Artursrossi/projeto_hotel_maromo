@@ -41,7 +41,12 @@ int desalugarQuarto();
 int alterarReservaAtual();
 
 /**
-  Lidar com Registro de Quartos
+  Listar todos os registros de alugueis
+ */
+int listarRegistrosAlugueis();
+
+/**
+  Listar os registros de alugueis filtrados pelo usuário
  */
 int gerarHistoricoReservas();
 
