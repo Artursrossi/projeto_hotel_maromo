@@ -33,6 +33,18 @@ int alugarQuarto() {
     return 200;
   }
 
+  // Verificar se o quarto já está preparado para ser alugado
+  if(!quarto.preparado){
+    printf("O quarto escolhido não está preparado para ser alugado. \n");
+    return 200;
+  }
+
+  // Verificar se o quarto já está ocupado
+  if(quarto.ocupado){
+    printf("O quarto escolhido já está ocupado. \n");
+    return 200;
+  }
+
   // Definir quarto como ocupado no banco de dados
   int statusOcuparQuarto = ocuparQuarto(quarto.codigo);
 
@@ -324,6 +336,29 @@ int listarQuartos() {
   }
 
   for (int i = 0; i < numero_quartos; i++) {
+    printf("Codigo: %d, Numero: %d, Tipo: %c, Valor diaria: %.2f, Preparado: %s, Ocupado: %s, Modificado em: %s, Cadastrado em: %s \n", quartos[i].codigo, quartos[i].numero, quartos[i].tipo, quartos[i].valor_diaria, quartos[i].preparado ? "sim" : "não", quartos[i].ocupado ? "sim" : "não", quartos[i].modificado_em, quartos[i].cadastrado_em);
+  }
+
+  // Libera a memória alocada
+  free(quartos);
+
+  return 200;
+}
+
+int listarQuartosDesocupados() {
+  t_quarto *quartos = malloc(sizeof(t_quarto));
+  int numero_quartos;
+
+  int statusObterMuitosQuartos = obterMuitosQuartosDesocupados(&quartos, &numero_quartos);
+
+  // Checar possibilidades de retorno da função
+  if (statusObterMuitosQuartos != 200) {
+    printf("Ocorreu um erro inesperado. Tente novamente mais tarde...");
+    return 200;
+  }
+
+  for (int i = 0; i < numero_quartos; i++) {
+    printf("%d", quartos[i].ocupado);
     printf("Codigo: %d, Numero: %d, Tipo: %c, Valor diaria: %.2f, Preparado: %s, Ocupado: %s, Modificado em: %s, Cadastrado em: %s \n", quartos[i].codigo, quartos[i].numero, quartos[i].tipo, quartos[i].valor_diaria, quartos[i].preparado ? "sim" : "não", quartos[i].ocupado ? "sim" : "não", quartos[i].modificado_em, quartos[i].cadastrado_em);
   }
 
