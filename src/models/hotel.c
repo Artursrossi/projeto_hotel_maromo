@@ -41,7 +41,7 @@ int cadastrarQuarto(int numero, char tipo, float valor_diaria) {
   ExecStatusType resStatus = PQresultStatus(res);
 
   // Fazer a captação de possíveis erros
-  if (resStatus != PGRES_TUPLES_OK) {
+  if (resStatus != PGRES_COMMAND_OK) {
     PQclear(res);
     PQfinish(conn);
     return 500; // Retornar CÓDIGO 500 erro de execução
@@ -94,7 +94,7 @@ int cadastrarRegistroAluguel(int codigo_quarto_escolhido, int codigo_usuario, in
   ExecStatusType resStatus = PQresultStatus(res);
 
   // Fazer a captação de possíveis erros
-  if (resStatus != PGRES_TUPLES_OK) {
+  if (resStatus != PGRES_COMMAND_OK) {
     PQclear(res);
     PQfinish(conn);
     return 500; // Retornar CÓDIGO 500 erro de execução
@@ -334,7 +334,7 @@ int ocuparQuarto(int codigo_quarto) {
   ExecStatusType resStatus = PQresultStatus(res);
 
   // Fazer a captação de possíveis erros
-  if (resStatus != PGRES_TUPLES_OK) {
+  if (resStatus != PGRES_COMMAND_OK) {
     PQclear(res);
     PQfinish(conn);
     return 500; // Retornar CÓDIGO 500 para erro de execução
@@ -367,7 +367,7 @@ int desocuparQuarto(int codigo_quarto) {
   ExecStatusType resStatus = PQresultStatus(res);
 
   // Fazer a captação de possíveis erros
-  if (resStatus != PGRES_TUPLES_OK) {
+  if (resStatus != PGRES_COMMAND_OK) {
     PQclear(res);
     PQfinish(conn);
     return 500; // Retornar CÓDIGO 500 para erro de execução

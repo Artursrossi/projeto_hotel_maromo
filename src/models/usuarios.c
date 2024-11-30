@@ -41,7 +41,7 @@ int cadastrarUsuario(char nome[65], char email[33], char senha[17], int idade) {
   ExecStatusType resStatus = PQresultStatus(res);
 
   // Fazer a captação de possíveis erros
-  if (resStatus != PGRES_TUPLES_OK) {
+  if (resStatus != PGRES_COMMAND_OK) {
     PQclear(res);
     PQfinish(conn);
     return 500; // Retornar CÓDIGO 500 erro de execução
