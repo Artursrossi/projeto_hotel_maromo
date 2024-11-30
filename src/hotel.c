@@ -16,8 +16,8 @@ int alugarQuarto() {
   // Declarar variáveis necessárias
   int codigo_usuario = usuario.codigo;
   int numero_quarto_escolhido;
-  int periodo_dias = 5;
-  int numero_ocupantes = 2;
+  int periodo_dias;
+  int numero_ocupantes;
 
   /** Obtendo o numero do quarto **/
   printf("-- Qual quarto voce gostaria de alugar? --\n");
@@ -70,87 +70,6 @@ int alugarQuarto() {
     return 200;
   }
 
-  // Definir valor total do aluguel
-  float valor_total = quarto.valor_diaria * periodo_dias;
-
-
-  int min_room = 0;
-  int max_room = 0;
-  int numero = 0; //se refere ao numero do quarto escolhido só agora que eu vi que esse nome é horrivel
-  int ocupantes = 0;
-  char tipo = '0';
-  int aluguel = 0;
-  float quarto_preco = 0;
-  char resposta;
-
-  printf("-- Menu de aluguel para quartos --\n");
-
-  /**  Obtendo os dados do usuario **/
-
-  /** Obtendo a classe do quarto **/
-  printf("-- Qual tipo de quarto voce gostaria de alugar? (M,A,B,C) --\n");
-  while (tipo == '0') {
-    scanf("%c", &tipo);
-    switch (tipo) {
-    case 'C': {
-      aluguel = 500;
-      break;
-    }
-    case 'B': {
-      aluguel = 600;
-      break;
-    }
-    case 'A': {
-      aluguel = 700;
-      break;
-    }
-    case 'M': {
-      aluguel = 800;
-      break;
-    }
-    default:
-      printf("informe um tipo valido\n");
-      tipo = '0';
-    }
-
-  }
-  for (int i = 1; i < 33; i++) {
-    if (Hotel[i]->tipo == tipo) {
-      /** procura quais são os indices para o tipo de quarto especificado **/
-      if (min_room == 0) {
-        min_room = i;
-        max_room = i;
-      } else {
-        max_room += 1;
-      }
-
-      printf("%d ", Hotel[i]->numero);
-    }
-  }
-
-  /** Obtendo o numero do quarto **/
-  printf("-- Qual quarto (%d-%d) voce gostaria de alugar? --\n", min_room, max_room);
-  while (numero == 0) {
-    scanf("%d", &numero);
-    if (numero < min_room || numero > max_room) {
-      numero = 0;
-    }
-    if (Hotel[numero]->ocupado == true) {
-      printf("-- o quarto esta ocupado por favor escolha outro--\n");
-      numero = 0;
-    }
-  }
-
-  /** Obtendo o numero de ocupantes **/
-  printf("-- Quantos ocupantes? (max 4 pessoas) --\n");
-  while (ocupantes == 0) {
-    scanf("%d", &ocupantes);
-    if (ocupantes < 0 || ocupantes > 4) {
-      printf("-- Por favor informe um numero valido de ocupantes (1 min - 4 max) --\n");
-      ocupantes = 0;
-    }
-  }
-
   // Verificar se o quarto já está preparado para ser alugado
   if(!quarto.preparado){
     printf("O quarto escolhido não está preparado para ser alugado. \n");
@@ -163,14 +82,14 @@ int alugarQuarto() {
     return 200;
   }
 
-  /** obtendo o preco final **/
-  quarto_preco = aluguel * ocupantes;
+  // Definir valor total do aluguel
+  float valor_total = quarto.valor_diaria * periodo_dias;
 
-  printf("-- o valor total do aluguel sera de %.2f --\n", quarto_preco);
+  printf("-- o valor total do aluguel sera de %.2f --\n", valor_total);
 
   printf("-- confirme o agendamento -- (S para continuar, N para sair)\n");
   fflush(stdin);
-  resposta = getchar();
+  char resposta = getchar();
   if (resposta != 'S') {
     printf("agendamento cancelado. \n");
     return 200;
@@ -200,10 +119,12 @@ int alugarQuarto() {
 int desalugarQuarto() {
   // Declarar variáveis necessárias
   int codigo_usuario = usuario.codigo;
-  int numero_quarto_escolhido = 1;
+  int numero_quarto_escolhido;
+  t_registro_aluguel *registro_aluguel = malloc(sizeof(t_registro_aluguel));
+  int numero_registro_aluguel;
 
   // Capturar número do quarto
-  printf("Informe o numero do quarto que deseja desalugar \n");
+  printf("Informe o do quarto que deseja desalugar \n");
   scanf("%d", &numero_quarto_escolhido);
 
   // Obter informações relacionadas ao quarto escolhido
@@ -220,6 +141,37 @@ int desalugarQuarto() {
     return 200;
   }
 
+  int statusObterMuitosRegistroAluguelPorCodigoUsuarioEmAndamento = obterMuitosRegistroAluguelPorCodigoUsuarioEmAndamento(&registro_aluguel, &numero_registro_aluguel, codigo_usuario);
+
+  // Checar possibilidades de retorno da função
+  if (statusObterMuitosRegistroAluguelPorCodigoUsuarioEmAndamento != 200) {
+    printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
+    return 200;
+  }
+
+  // Mensagem caso não tenha aluguéis
+  if(numero_registro_aluguel == 0){
+    printf("Você não tem nenhuma reserva em aberto. \n");
+    return 200;
+  }
+
+  int codigo_reserva_escolhida = 0;
+  for (int i = 0; i < numero_registro_aluguel; i++) {
+    if(registro_aluguel[i].quarto_escolhido == numero_quarto_escolhido && registro_aluguel[i].usuario_relacionado == usuario.codigo && registro_aluguel[i].aluguel_em_andamento == true) codigo_reserva_escolhida = registro_aluguel[i].codigo;
+  }
+
+  // Verificar se a reserva desse quarto está no nome do usuário que está desalugando o quarto
+  if(codigo_reserva_escolhida == 0){
+    printf("Você não está alugando o quarto de número %d no momento. \n", numero_quarto_escolhido);
+    return 200;
+  }
+
+  // Verificar se o quarto está ocupado
+  if(!quarto.ocupado){
+    printf("O quarto escolhido não está ocupado. \n");
+    return 200;
+  }
+
   // Definir quarto como ocupado no banco de dados
   int statusDesocuparQuarto = desocuparQuarto(quarto.codigo);
 
@@ -228,6 +180,18 @@ int desalugarQuarto() {
     printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
     return 200;
   }
+
+  // Definir quarto como ocupado no banco de dados
+  int statusFinalizarReserva = finalizarReserva(codigo_reserva_escolhida);
+
+  // Checar possibilidades de retorno da função
+  if (statusFinalizarReserva != 200) {
+    printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
+    return 200;
+  }
+
+  // Libera a memória alocada
+  free(registro_aluguel);
 
   return 200;
 }
