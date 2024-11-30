@@ -312,7 +312,7 @@ int gerarHistoricoReservas() {
 }
 
 int listarQuartos() {
-  t_quarto * quartos = malloc(sizeof(t_quarto));
+  t_quarto *quartos = malloc(sizeof(t_quarto));
   int numero_quartos;
 
   int statusObterMuitosQuartos = obterMuitosQuartos( &quartos, &numero_quartos);
@@ -326,6 +326,9 @@ int listarQuartos() {
   for (int i = 0; i < numero_quartos; i++) {
     printf("Codigo: %d, Numero: %d, Tipo: %c, Valor diaria: %.2f, Preparado: %s, Ocupado: %s, Modificado em: %s, Cadastrado em: %s \n", quartos[i].codigo, quartos[i].numero, quartos[i].tipo, quartos[i].valor_diaria, quartos[i].preparado ? "sim" : "não", quartos[i].ocupado ? "sim" : "não", quartos[i].modificado_em, quartos[i].cadastrado_em);
   }
+
+  // Libera a memória alocada
+  free(quartos);
 
   return 200;
 }

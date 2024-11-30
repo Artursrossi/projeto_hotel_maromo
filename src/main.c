@@ -18,7 +18,6 @@ void exibirMenuAdmin() {
   printf("2 - Exibir todos os quartos \n");
   printf("3 - Cadastrar novos quartos \n");
   printf("4 - Voltar ao menu anterior \n");
-  printf("\n");
 
   return;
 }
@@ -68,7 +67,6 @@ void exibirMenuLogado() {
   printf("6 - Sair da conta \n");
 
   if (strcmp(usuario.cargo, "ADMINISTRADOR") == 0) printf("7 - Acessar área administrativa \n");
-  printf("\n");
 
   return;
 }
@@ -129,7 +127,6 @@ void exibirMenuInicial() {
   printf("Escolha uma opção \n");
   printf("1 - Entrar com uma conta existente  \n");
   printf("2 - Cadastrar nova conta \n");
-  printf("\n");
 
   return;
 }
