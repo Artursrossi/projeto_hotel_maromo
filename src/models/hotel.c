@@ -840,3 +840,41 @@ int finalizarReserva(int codigo_registro_aluguel) {
 
   return 200; // Retornar CÓDIGO 200 sucesso
 }
+
+int atualizarReservaNumeroOcupantes(int codigo_registro_aluguel, int novo_numero_ocupantes) {
+  // Obter conexão com o banco de dados
+  PGconn *conn = connection();
+
+  // SQL para ser executado
+  char query[192] = "UPDATE registro_alugueis SET numero_ocupantes = ";
+
+  // Concatenar novo_numero_ocupantes
+  char *s_novo_numero_ocupantes = intToCharVetor(novo_numero_ocupantes);
+  strcat(query, s_novo_numero_ocupantes);
+
+  strcat(query, " WHERE codigo = ");
+
+  // Concatenar codigo_registro_aluguel
+  char *s_codigo_registro_aluguel = intToCharVetor(codigo_registro_aluguel);
+  strcat(query, s_codigo_registro_aluguel);
+  strcat(query, ";");
+
+  // Obter resposta do SQL executado
+  PGresult *res = PQexec(conn, query);
+
+  // Obter código de resposta da chamada ao banco
+  ExecStatusType resStatus = PQresultStatus(res);
+
+  // Fazer a captação de possíveis erros
+  if (resStatus != PGRES_COMMAND_OK) {
+    PQclear(res);
+    PQfinish(conn);
+    return 500; // Retornar CÓDIGO 500 para erro de execução
+  }
+
+  // Finalizar conexão com o banco de dados
+  PQclear(res);
+  PQfinish(conn);
+
+  return 200; // Retornar CÓDIGO 200 sucesso
+}

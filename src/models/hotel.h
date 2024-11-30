@@ -56,4 +56,9 @@ int desocuparQuarto(int codigo_quarto);
  */
 int finalizarReserva(int codigo_registro_aluguel);
 
+/*
+  Modificar, na tabela de registro_alugueis, a coluna "numero_ocupantes"
+ */
+int atualizarReservaNumeroOcupantes(int codigo_registro_aluguel, int novo_numero_ocupantes);
+
 #endif
