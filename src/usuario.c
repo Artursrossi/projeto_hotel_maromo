@@ -247,7 +247,7 @@ int listarUsuarios() {
   }
 
   for (int i = 0; i < numero_usuarios; i++) {
-    printf("Código: %d, Nome: %s, Email: %s, Idade: %d, Cargo: %s, Cadastrado em: %s \n", usuarios[i].codigo, usuarios[i].nome, usuarios[i].email, usuarios[i].idade, usuarios[i].cargo, usuarios[i].cadastrado_em);
+    printf("Nome: %s, Email: %s, Idade: %d, Cargo: %s, Cadastrado em: %s \n", usuarios[i].nome, usuarios[i].email, usuarios[i].idade, usuarios[i].cargo, usuarios[i].cadastrado_em);
   }
 
   // Libera a memória alocada

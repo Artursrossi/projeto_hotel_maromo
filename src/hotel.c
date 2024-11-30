@@ -15,41 +15,57 @@ p_registro Registro[32]; // variavel que registra o aluguel de um quarto contend
 int alugarQuarto() {
   // Declarar variáveis necessárias
   int codigo_usuario = usuario.codigo;
-  int codigo_quarto_escolhido = 1;
+  int numero_quarto_escolhido;
   int periodo_dias = 5;
   int numero_ocupantes = 2;
 
+  /** Obtendo o numero do quarto **/
+  printf("-- Qual quarto voce gostaria de alugar? --\n");
+  while (numero_quarto_escolhido == 0) {
+    scanf("%d", &numero_quarto_escolhido);
+
+    if (numero_quarto_escolhido < 1) {
+      printf("-- Por favor informe um quarto válido --\n");
+      continue;
+    }
+  }
+
+  /** Obtendo o numero de ocupantes **/
+  printf("-- Quantos ocupantes? (max 4 pessoas) --\n");
+  while (1) {
+    scanf("%d", &numero_ocupantes);
+
+    if (numero_ocupantes < 1 || numero_ocupantes > 4) {
+      printf("-- Por favor informe um numero valido de ocupantes (1 min - 5 max) --\n");
+      continue;
+    }
+
+    break;
+  }
+
+  /** Obtendo o período de dias **/
+  printf("-- Deseja reservar o quarto por quantos dias? --\n");
+  while (1) {
+    scanf("%d", &periodo_dias);
+
+    if (periodo_dias < 0 || periodo_dias > 20) {
+      printf("-- Por favor informe um intervalo de dias válido (1 min - 20 max) --\n");
+      continue;
+    }
+
+    break;
+  }
+
   // Obter informações relacionadas ao quarto escolhido
   t_quarto quarto;
-  int statusObterUnicoQuartoPorCodigo = obterUnicoQuartoPorCodigo(&quarto, codigo_quarto_escolhido);
+  int statusObterUnicoQuartoPorNumero = obterUnicoQuartoPorNumero(&quarto, numero_quarto_escolhido);
 
   // Checar possibilidades de retorno da função
-  if (statusObterUnicoQuartoPorCodigo == 404) {
+  if (statusObterUnicoQuartoPorNumero == 404) {
     printf("Quarto não encontrado \n");
     return 200;
   }
-  if (statusObterUnicoQuartoPorCodigo != 200) {
-    printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
-    return 200;
-  }
-
-  // Verificar se o quarto já está preparado para ser alugado
-  if(!quarto.preparado){
-    printf("O quarto escolhido não está preparado para ser alugado. \n");
-    return 200;
-  }
-
-  // Verificar se o quarto já está ocupado
-  if(quarto.ocupado){
-    printf("O quarto escolhido já está ocupado. \n");
-    return 200;
-  }
-
-  // Definir quarto como ocupado no banco de dados
-  int statusOcuparQuarto = ocuparQuarto(quarto.codigo);
-
-  // Checar possibilidades de retorno da função
-  if (statusOcuparQuarto != 200) {
+  if (statusObterUnicoQuartoPorNumero != 200) {
     printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
     return 200;
   }
@@ -57,14 +73,6 @@ int alugarQuarto() {
   // Definir valor total do aluguel
   float valor_total = quarto.valor_diaria * periodo_dias;
 
-  // Cadastrar registro aluguel e obter status do retorno
-  int statusCadastrarRegistroAluguel = cadastrarRegistroAluguel(codigo_quarto_escolhido, codigo_usuario, periodo_dias, valor_total, numero_ocupantes);
-
-  // Checar possibilidades de retorno da função
-  if (statusCadastrarRegistroAluguel != 201) {
-    printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
-    return 200;
-  }
 
   int min_room = 0;
   int max_room = 0;
@@ -142,8 +150,20 @@ int alugarQuarto() {
       ocupantes = 0;
     }
   }
-  /** obtendo o preco final **/
 
+  // Verificar se o quarto já está preparado para ser alugado
+  if(!quarto.preparado){
+    printf("O quarto escolhido não está preparado para ser alugado. \n");
+    return 200;
+  }
+
+  // Verificar se o quarto já está ocupado
+  if(quarto.ocupado){
+    printf("O quarto escolhido já está ocupado. \n");
+    return 200;
+  }
+
+  /** obtendo o preco final **/
   quarto_preco = aluguel * ocupantes;
 
   printf("-- o valor total do aluguel sera de %.2f --\n", quarto_preco);
@@ -151,14 +171,27 @@ int alugarQuarto() {
   printf("-- confirme o agendamento -- (S para continuar, N para sair)\n");
   fflush(stdin);
   resposta = getchar();
-  if (resposta == 'N') {
-    printf("agendamento cancelado\n");
-  } else if (resposta == 'S') {
-    printf("agendamento confirmado\n");
-    Registro[numero]->valor_total = quarto_preco;
-    Registro[numero]->numero_ocupantes = ocupantes;
-    Registro[numero]->quarto_escolhido = numero;
-    Hotel[numero]->ocupado = true;
+  if (resposta != 'S') {
+    printf("agendamento cancelado. \n");
+    return 200;
+  }
+
+  // Definir quarto como ocupado no banco de dados
+  int statusOcuparQuarto = ocuparQuarto(quarto.codigo);
+
+  // Checar possibilidades de retorno da função
+  if (statusOcuparQuarto != 200) {
+    printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
+    return 200;
+  }
+
+  // Cadastrar registro aluguel e obter status do retorno
+  int statusCadastrarRegistroAluguel = cadastrarRegistroAluguel(quarto.codigo, codigo_usuario, periodo_dias, valor_total, numero_ocupantes);
+
+  // Checar possibilidades de retorno da função
+  if (statusCadastrarRegistroAluguel != 201) {
+    printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
+    return 200;
   }
 
   return 200;
@@ -166,18 +199,23 @@ int alugarQuarto() {
 
 int desalugarQuarto() {
   // Declarar variáveis necessárias
-  int codigo_quarto_escolhido = 1;
+  int codigo_usuario = usuario.codigo;
+  int numero_quarto_escolhido = 1;
+
+  // Capturar número do quarto
+  printf("Informe o numero do quarto que deseja desalugar \n");
+  scanf("%d", &numero_quarto_escolhido);
 
   // Obter informações relacionadas ao quarto escolhido
   t_quarto quarto;
-  int statusObterUnicoQuartoPorCodigo = obterUnicoQuartoPorCodigo(&quarto, codigo_quarto_escolhido);
+  int statusObterUnicoQuartoPorNumero = obterUnicoQuartoPorNumero(&quarto, numero_quarto_escolhido);
 
   // Checar possibilidades de retorno da função
-  if (statusObterUnicoQuartoPorCodigo == 404) {
+  if (statusObterUnicoQuartoPorNumero == 404) {
     printf("Quarto não encontrado \n");
     return 200;
   }
-  if (statusObterUnicoQuartoPorCodigo != 200) {
+  if (statusObterUnicoQuartoPorNumero != 200) {
     printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
     return 200;
   }
@@ -189,31 +227,6 @@ int desalugarQuarto() {
   if (statusDesocuparQuarto != 200) {
     printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
     return 200;
-  }
-
-  int numero = 0;
-  int ocupantes = 0;
-  float quarto_preco = 0;
-  char resposta;
-
-  printf("por favor informe o numero do quarto alugado\n");
-  while (numero == 0) {
-    scanf("%d", &numero);
-
-    if (numero < 1 || numero > 32) {
-      printf("por favor informe um quarto valido\n");
-      numero = 0;
-    }
-  }
-  printf("-- voce realmente deseja desalugar seu quarto?  -- (S para continuar, N para cancelar)\n");
-  fflush(stdin);
-  resposta = getchar();
-  if (resposta == 'S') {
-    printf("seu quarto foi desalugado com sucesso!\n");
-    //resetando as informações do quarto
-    Registro[numero]->valor_total = quarto_preco;
-    Registro[numero]->numero_ocupantes = ocupantes;
-    Hotel[numero]->ocupado = false;
   }
 
   return 200;
@@ -320,12 +333,12 @@ int listarRegistrosAlugueis() {
 
   // Mensagem caso não tenha aluguéis
   if(numero_registro_aluguel == 0){
-    printf("Você ainda não efetuou nenhum aluguel. \n");
+    printf("Não há reservas no sistema. \n");
     return 200;
   }
 
   for (int i = 0; i < numero_registro_aluguel; i++) {
-    printf("Codigo: %d, Quarto escolhido: %d, Usuário relacionado: %d, Período dias: %d, Valor total: %.2f, Número ocupantes: %d, Alugado em: %s \n", registro_aluguel[i].codigo, registro_aluguel[i].quarto_escolhido, registro_aluguel[i].usuario_relacionado, registro_aluguel[i].periodo_dias, registro_aluguel[i].valor_total, registro_aluguel[i].numero_ocupantes, registro_aluguel[i].alugado_em);
+    printf("Codigo: %d, Quarto escolhido: %d, Usuário relacionado: %d, Período dias: %d, Valor total: %.2f, Número ocupantes: %d, Aluguel em andamento: %s, Alugado em: %s \n", registro_aluguel[i].codigo, registro_aluguel[i].quarto_escolhido, registro_aluguel[i].usuario_relacionado, registro_aluguel[i].periodo_dias, registro_aluguel[i].valor_total, registro_aluguel[i].numero_ocupantes, registro_aluguel[i].aluguel_em_andamento ? "sim" : "não", registro_aluguel[i].alugado_em);
   }
 
   // Libera a memória alocada
@@ -334,7 +347,36 @@ int listarRegistrosAlugueis() {
   return 200;
 }
 
-int gerarHistoricoReservas() {
+int listarReservaAtual() {
+  int codigo_usuario = usuario.codigo;
+  t_registro_aluguel *registro_aluguel = malloc(sizeof(t_registro_aluguel));
+  int numero_registro_aluguel;
+
+  int statusObterMuitosRegistroAluguelPorCodigoUsuarioEmAndamento = obterMuitosRegistroAluguelPorCodigoUsuarioEmAndamento(&registro_aluguel, &numero_registro_aluguel, codigo_usuario);
+
+  // Checar possibilidades de retorno da função
+  if (statusObterMuitosRegistroAluguelPorCodigoUsuarioEmAndamento != 200) {
+    printf("Ocorreu um erro inesperado. Tente novamente mais tarde... \n");
+    return 200;
+  }
+
+  // Mensagem caso não tenha aluguéis
+  if(numero_registro_aluguel == 0){
+    printf("Você não tem nenhuma reserva em aberto. \n");
+    return 200;
+  }
+
+  for (int i = 0; i < numero_registro_aluguel; i++) {
+    printf("Quarto escolhido: %d, Usuário relacionado: %d, Período dias: %d, Valor total: %.2f, Número ocupantes: %d, Aluguel em andamento: %s, Alugado em: %s \n", registro_aluguel[i].quarto_escolhido, registro_aluguel[i].usuario_relacionado, registro_aluguel[i].periodo_dias, registro_aluguel[i].valor_total, registro_aluguel[i].numero_ocupantes, registro_aluguel[i].aluguel_em_andamento ? "sim" : "não", registro_aluguel[i].alugado_em);
+  }
+
+  // Libera a memória alocada
+  free(registro_aluguel);
+
+  return 200;
+}
+
+int listarHistoricoReservas() {
   int codigo_usuario = usuario.codigo;
   t_registro_aluguel *registro_aluguel = malloc(sizeof(t_registro_aluguel));
   int numero_registro_aluguel;
@@ -354,7 +396,7 @@ int gerarHistoricoReservas() {
   }
 
   for (int i = 0; i < numero_registro_aluguel; i++) {
-    printf("Codigo: %d, Quarto escolhido: %d, Usuário relacionado: %d, Período dias: %d, Valor total: %.2f, Número ocupantes: %d, Alugado em: %s \n", registro_aluguel[i].codigo, registro_aluguel[i].quarto_escolhido, registro_aluguel[i].usuario_relacionado, registro_aluguel[i].periodo_dias, registro_aluguel[i].valor_total, registro_aluguel[i].numero_ocupantes, registro_aluguel[i].alugado_em);
+    printf("Quarto escolhido: %d, Usuário relacionado: %d, Período dias: %d, Valor total: %.2f, Número ocupantes: %d, Aluguel em andamento: %s, Alugado em: %s \n", registro_aluguel[i].quarto_escolhido, registro_aluguel[i].usuario_relacionado, registro_aluguel[i].periodo_dias, registro_aluguel[i].valor_total, registro_aluguel[i].numero_ocupantes, registro_aluguel[i].aluguel_em_andamento ? "sim" : "não", registro_aluguel[i].alugado_em);
   }
 
   // Libera a memória alocada
@@ -376,7 +418,7 @@ int listarQuartos() {
   }
 
   for (int i = 0; i < numero_quartos; i++) {
-    printf("Codigo: %d, Numero: %d, Tipo: %c, Valor diaria: %.2f, Preparado: %s, Ocupado: %s, Modificado em: %s, Cadastrado em: %s \n", quartos[i].codigo, quartos[i].numero, quartos[i].tipo, quartos[i].valor_diaria, quartos[i].preparado ? "sim" : "não", quartos[i].ocupado ? "sim" : "não", quartos[i].modificado_em, quartos[i].cadastrado_em);
+    printf("Numero: %d, Tipo: %c, Valor diaria: %.2f, Preparado: %s, Ocupado: %s, Modificado em: %s, Cadastrado em: %s \n", quartos[i].numero, quartos[i].tipo, quartos[i].valor_diaria, quartos[i].preparado ? "sim" : "não", quartos[i].ocupado ? "sim" : "não", quartos[i].modificado_em, quartos[i].cadastrado_em);
   }
 
   // Libera a memória alocada
@@ -399,7 +441,7 @@ int listarQuartosDesocupados() {
 
   for (int i = 0; i < numero_quartos; i++) {
     printf("%d", quartos[i].ocupado);
-    printf("Codigo: %d, Numero: %d, Tipo: %c, Valor diaria: %.2f, Preparado: %s, Ocupado: %s, Modificado em: %s, Cadastrado em: %s \n", quartos[i].codigo, quartos[i].numero, quartos[i].tipo, quartos[i].valor_diaria, quartos[i].preparado ? "sim" : "não", quartos[i].ocupado ? "sim" : "não", quartos[i].modificado_em, quartos[i].cadastrado_em);
+    printf("Numero: %d, Tipo: %c, Valor diaria: %.2f, Preparado: %s, Ocupado: %s, Modificado em: %s, Cadastrado em: %s \n", quartos[i].numero, quartos[i].tipo, quartos[i].valor_diaria, quartos[i].preparado ? "sim" : "não", quartos[i].ocupado ? "sim" : "não", quartos[i].modificado_em, quartos[i].cadastrado_em);
   }
 
   // Libera a memória alocada

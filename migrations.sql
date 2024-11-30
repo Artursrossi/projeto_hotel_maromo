@@ -28,6 +28,7 @@ CREATE TABLE registro_alugueis (
   periodo_dias SMALLINT NOT NULL,
   valor_total NUMERIC(7,2) NOT NULL,
   numero_ocupantes SMALLINT NOT NULL,
+  aluguel_em_andamento BOOLEAN NOT NULL DEFAULT TRUE,
   alugado_em TIMESTAMP DEFAULT current_timestamp
 );
 

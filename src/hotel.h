@@ -22,6 +22,7 @@ typedef struct RegistroAluguel {
   int periodo_dias;
   float valor_total;
   int numero_ocupantes;
+  bool aluguel_em_andamento;
   char alugado_em[11];
 } t_registro_aluguel;
 
@@ -46,9 +47,14 @@ int alterarReservaAtual();
 int listarRegistrosAlugueis();
 
 /**
+  Listar os registros de alugueis filtrados pelo usuário, que estejam em andamento
+ */
+int listarReservaAtual();
+
+/**
   Listar os registros de alugueis filtrados pelo usuário
  */
-int gerarHistoricoReservas();
+int listarHistoricoReservas();
 
 /**
   Listar todos os quartos
