@@ -26,41 +26,69 @@ void exibirMenuAdmin() {
 void controlarMenuAdmin() {
   if (strcmp(usuario.cargo, "ADMINISTRADOR") != 0) return;
 
-  short int opt = 0; // Variável com a opção escolhida
-  short int status = 0; // Variável com o retorno da função executada
+  // Declarar variáveis
+  int opt = 0; // Variável com a opção escolhida
+  int status = 0; // Variável com o retorno da função executada
+  char buffer[64];
 
   do {
     exibirMenuAdmin();
-    scanf("%hd", & opt);
-  } while (opt <= 0 || opt > 5);
+
+    // Captura entrada do usuário
+    if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+      printf("Entrada inválida.\n");
+      continue;
+    }
+
+    // Remove o caractere de nova linha
+    buffer[strcspn(buffer, "\n")] = '\0';
+
+    // Verificar se é um número válido
+    if (sscanf(buffer, "%d", &opt) != 1) {
+      printf("Escolha inválida. \n");
+      continue;
+    }
+
+    // Validar intervalo de opções
+    if(opt < 1 || opt > 5){
+      printf("Você deve escolher de 1 a 5 \n");
+      continue;
+    }
+
+    break;
+  } while (1);
+
   switch (opt) {
-  case 1:
-    status = listarUsuarios();
-    if (status == 200) {
-      controlarMenuAdmin();
-    }
-    break;
-  case 2:
-    status = listarQuartos();
-    if (status == 200) {
-      controlarMenuAdmin();
-    }
-    break;
-  case 3:
-    status = listarRegistrosAlugueis();
-    if (status == 200) {
-      controlarMenuAdmin();
-    }
-    break;
-  case 4:
-    status = registrarQuarto();
-    if (status == 200) {
-      controlarMenuAdmin();
-    }
-    break;
-  case 5:
-    controlarMenuLogado();
-    break;
+    case 1:
+      status = listarUsuarios();
+      if (status == 200) {
+        controlarMenuAdmin();
+      }
+      break;
+    case 2:
+      status = listarQuartos();
+      if (status == 200) {
+        controlarMenuAdmin();
+      }
+      break;
+    case 3:
+      status = listarRegistrosAlugueis();
+      if (status == 200) {
+        controlarMenuAdmin();
+      }
+      break;
+    case 4:
+      status = registrarQuarto();
+      if (status == 200) {
+        controlarMenuAdmin();
+      }
+      break;
+    case 5:
+      controlarMenuLogado();
+      break;
+    default:
+      printf("Opção inválida. \n");
+      break;
   }
 }
 
@@ -79,54 +107,81 @@ void exibirMenuLogado() {
 }
 
 void controlarMenuLogado() {
-  short int opt = 0; // Variável com a opção escolhida
-  short int status = 0; // Variável com o retorno da função executada
+  // Declarar variáveis
+  int opt = 0; // Variável com a opção escolhida
+  int status = 0; // Variável com o retorno da função executada
+  char buffer[64];
 
   do {
     exibirMenuLogado();
-    scanf("%hd", & opt);
-  } while (opt <= 0 || opt > 7);
+
+    // Captura entrada do usuário
+    if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+      printf("Entrada inválida.\n");
+      continue;
+    }
+
+    // Remove o caractere de nova linha
+    buffer[strcspn(buffer, "\n")] = '\0';
+
+    // Verificar se é um número válido
+    if (sscanf(buffer, "%d", &opt) != 1) {
+      printf("Escolha inválida. \n");
+      continue;
+    }
+
+    // Validar intervalo de opções
+    if(opt < 1 || opt > 7){
+      printf("Você deve escolher de 1 a 7 \n");
+      continue;
+    }
+
+    break;
+  } while (1);
 
   switch (opt) {
-  case 1:
-    status = listarQuartosDesocupados();
-    if (status == 200) {
-      controlarMenuLogado();
-    }
-    break;
-  case 2:
-    status = alugarQuarto();
-    if (status == 200) {
-      controlarMenuLogado();
-    }
-    break;
-  case 3:
-    status = desalugarQuarto();
-    if (status == 200) {
-      controlarMenuLogado();
-    }
-    break;
-  case 4:
-    status = alterarReservaAtual();
-    if (status == 200) {
-      controlarMenuLogado();
-    }
-    break;
-  case 5:
-    status = gerarHistoricoReservas();
-    if (status == 200) {
-      controlarMenuLogado();
-    }
-    break;
-  case 6:
-    status = deslogarUsuario();
-    if (status == 200) {
-      controlarMenuInicial();
-    }
-    break;
-  case 7:
-    controlarMenuAdmin();
-    break;
+    case 1:
+      status = listarQuartosDesocupados();
+      if (status == 200) {
+        controlarMenuLogado();
+      }
+      break;
+    case 2:
+      status = alugarQuarto();
+      if (status == 200) {
+        controlarMenuLogado();
+      }
+      break;
+    case 3:
+      status = desalugarQuarto();
+      if (status == 200) {
+        controlarMenuLogado();
+      }
+      break;
+    case 4:
+      status = alterarReservaAtual();
+      if (status == 200) {
+        controlarMenuLogado();
+      }
+      break;
+    case 5:
+      status = gerarHistoricoReservas();
+      if (status == 200) {
+        controlarMenuLogado();
+      }
+      break;
+    case 6:
+      status = deslogarUsuario();
+      if (status == 200) {
+        controlarMenuInicial();
+      }
+      break;
+    case 7:
+      controlarMenuAdmin();
+      break;
+    default:
+      printf("Opção inválida. \n");
+      break;
   }
 }
 
@@ -139,34 +194,61 @@ void exibirMenuInicial() {
 }
 
 void controlarMenuInicial() {
-  short int opt = 0; // Variável com a opção escolhida
-  short int status = 0; // Variável com o retorno da função executada
+  // Declarar variáveis
+  int opt = 0; // Variável com a opção escolhida
+  int status = 0; // Variável com o retorno da função executada
+  char buffer[64];
 
   do {
     exibirMenuInicial();
-    scanf("%hd", & opt);
-  } while (opt <= 0 || opt > 2);
+
+    // Captura entrada do usuário
+    if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+      printf("Entrada inválida.\n");
+      continue;
+    }
+
+    // Remove o caractere de nova linha
+    buffer[strcspn(buffer, "\n")] = '\0';
+
+    // Verificar se é um número válido
+    if (sscanf(buffer, "%d", &opt) != 1) {
+      printf("Escolha inválida. \n");
+      continue;
+    }
+
+    // Validar intervalo de opções
+    if(opt < 1 || opt > 2){
+      printf("Você deve escolher de 1 a 2 \n");
+      continue;
+    }
+
+    break;
+  } while (1);
 
   switch (opt) {
-  case 1:
-    status = autenticarUsuario();
-    // Usuário não autenticado
-    if(status == 400){
-      controlarMenuInicial();
+    case 1:
+      status = autenticarUsuario();
+      // Usuário não autenticado
+      if(status == 400){
+        controlarMenuInicial();
+        break;
+      }
+      // Assim que o login for efetuado com sucesso, mostrar Menu Logado
+      if (status == 200) {
+        controlarMenuLogado();
+      }
       break;
-    }
-    // Assim que o login for efetuado com sucesso, mostrar Menu Logado
-    if (status == 200) {
-      controlarMenuLogado();
-    }
-    break;
-  case 2:
-    status = registrarUsuario();
-    // Assim que o usuário cadastrar um usuário, mostrar a opção de logar
-    if (status == 200) {
-      controlarMenuInicial();
-    }
-    break;
+    case 2:
+      status = registrarUsuario();
+      // Assim que o usuário cadastrar um usuário, mostrar a opção de logar
+      if (status == 200) {
+        controlarMenuInicial();
+      }
+      break;
+    default:
+      printf("Opção inválida. \n");
+      break;
   }
 }
 
