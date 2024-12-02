@@ -52,33 +52,34 @@ Certifique-se de ter as seguintes ferramentas instaladas em sua máquina:
 ### 1. Clone este repositório:
 
 ```bash
-    git clone https://github.com/Artursrossi/projeto_hotel_maromo.git
+  git clone https://github.com/Artursrossi/projeto_hotel_maromo.git
 ```
 
 ### 2. Configure o banco de dados:
 
-    2.1 Suba o banco de dados dentro de um container docker, executando:
-    ```bash
-        docker-compose up -d
-    ```
+2.1 Suba o banco de dados dentro de um container docker, executando:
 
-    2.2 Acesse o banco de dados utilizando o visualizador de banco de dados da sua preferência (ex:. HeidiSQL, Beekepper). Para isso você terá que utilizar as credenciais dentro do arquivo docker-compose.yml
+```bash
+  docker-compose up -d
+```
 
-    2.3 Dentro do executor de Query SQL do seu visualizador, Importe o arquivo migrations.sql para gerar o schema do banco de dados
+2.2 Acesse o banco de dados utilizando o visualizador de banco de dados da sua preferência (ex:. HeidiSQL, Beekepper). Para isso você terá que utilizar as credenciais dentro do arquivo docker-compose.yml
 
-    2.4 Dentro do executor de Query SQL do seu visualizador, Importe o arquivo seed.sql para popular dados pré-definidos às tabelas
+2.3 Dentro do executor de Query SQL do seu visualizador, Importe o arquivo migrations.sql para gerar o schema do banco de dados
+
+2.4 Dentro do executor de Query SQL do seu visualizador, Importe o arquivo seed.sql para popular dados pré-definidos às tabelas
 
 ### 3. Compile o projeto:
 
-    ```bash
-        gcc main.c usuario.c hotel.c models/usuarios.c models/hotel.c lib/psql.c utils/conversoes.c -o main -L "/usr/lib/x86_64-linux-gnu" -lpq
-    ```
+```bash
+  gcc main.c usuario.c hotel.c models/usuarios.c models/hotel.c lib/psql.c utils/conversoes.c -o main -L "/usr/lib/x86_64-linux-gnu" -lpq
+```
 
 ### 4.Execute a aplicação:
 
-    ```bash
-        ./main
-    ```
+```bash
+  ./main
+```
 
 ## Guia de Usuário
 
